@@ -112,15 +112,15 @@ export default function SavedPage({ locale = "en" }: SavedPageProps) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4 text-center">
         <Bookmark className="w-10 h-10 text-muted-foreground" />
-        <h1 className="text-xl font-bold">Your saved articles</h1>
+        <h1 className="text-xl font-bold">your saved articles</h1>
         <p className="text-sm text-muted-foreground max-w-xs">
-          Sign in to save articles and access them from any device.
+          sign in to save articles and access them from any device.
         </p>
         <Link
           to={backHref}
           className="text-sm text-muted-foreground underline underline-offset-2 mt-2"
         >
-          ← Back to the feed
+          ← back to the feed
         </Link>
       </div>
     );
@@ -140,7 +140,7 @@ export default function SavedPage({ locale = "en" }: SavedPageProps) {
           </Link>
           <div className="flex items-center gap-2">
             <Bookmark className="w-4 h-4" />
-            <span className="font-semibold text-sm">Saved articles</span>
+            <span className="font-semibold text-sm">saved articles</span>
           </div>
           {savedArticles.length > 0 && (
             <span className="ml-auto text-xs text-muted-foreground">
@@ -167,15 +167,15 @@ export default function SavedPage({ locale = "en" }: SavedPageProps) {
         {!isLoading && !authLoading && savedArticles.length === 0 && (
           <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
             <Bookmark className="w-10 h-10 text-muted-foreground" strokeWidth={1} />
-            <h2 className="text-lg font-semibold">Nothing saved yet</h2>
+            <h2 className="text-lg font-semibold">nothing saved yet — bookmark the stories worth revisiting.</h2>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Click the bookmark icon on any article to save it here.
+              click the bookmark icon on any article to save it here.
             </p>
             <Link
               to={backHref}
               className="text-sm font-medium underline underline-offset-2 text-foreground"
             >
-              Browse the feed →
+              browse the feed →
             </Link>
           </div>
         )}

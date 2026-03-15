@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { Languages } from "lucide-react";
 import { type Article, TOPIC_COLORS, getSourceBorderColor } from "@/lib/constants";
 
 interface ArticleRowProps {
@@ -48,6 +49,20 @@ const ArticleRow = ({ article }: ArticleRowProps) => {
         <span className="ml-auto text-[0.7rem] text-muted-foreground whitespace-nowrap">
           {dateStr}
         </span>
+        <a
+          href={
+            article.locale === "de"
+              ? `https://translate.google.com/translate?sl=de&tl=en&u=${encodeURIComponent(article.link)}`
+              : `https://translate.google.com/translate?sl=en&tl=de&u=${encodeURIComponent(article.link)}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          title={article.locale === "de" ? "translate to english" : "auf deutsch lesen"}
+          aria-label={article.locale === "de" ? "translate to english" : "auf deutsch lesen"}
+          className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
+        >
+          <Languages className="w-3.5 h-3.5" strokeWidth={1.5} />
+        </a>
       </div>
 
       {/* Headline */}
@@ -76,7 +91,7 @@ const ArticleRow = ({ article }: ArticleRowProps) => {
         rel="noopener noreferrer"
         className="inline-block mt-2 text-xs text-muted-foreground hover:underline"
       >
-        Read full article →
+        read full article →
       </a>
     </article>
   );

@@ -3,7 +3,7 @@ import { type Translations } from "@/lib/translations";
 import { format } from "date-fns";
 import ThemeToggle from "./ThemeToggle";
 import { useNavigate, Link } from "react-router-dom";
-import { Bookmark, Mail, UserCircle } from "lucide-react";
+import { Bookmark, Mail, UserCircle, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 interface MastheadProps {
@@ -13,9 +13,10 @@ interface MastheadProps {
   locale: Locale;
   t: Translations;
   onNewsletterClick: () => void;
+  onMenuClick: () => void;
 }
 
-const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClick }: MastheadProps) => {
+const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClick, onMenuClick }: MastheadProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -43,6 +44,15 @@ const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClic
         {/* Controls — row on mobile, column on desktop (right-aligned) */}
         <div className="flex items-center gap-3 sm:ml-auto sm:flex-col sm:items-end sm:gap-2 relative z-10">
           <div className="flex items-center gap-3">
+            {/* Hamburger — mobile only (sidebar is fixed on desktop) */}
+            <button
+              onClick={onMenuClick}
+              aria-label="open menu"
+              className="lg:hidden text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Menu className="w-4 h-4" strokeWidth={1.5} />
+            </button>
+
             <button
               onClick={onAboutToggle}
               className="text-xs text-muted-foreground hover:text-foreground transition-colors font-sans"

@@ -56,7 +56,7 @@ export default function NewsletterModal({ open, onClose, locale }: NewsletterMod
     e.preventDefault();
     setEmailError("");
     if (!email.includes("@")) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError("please enter a valid email address.");
       return;
     }
     await subscribe({ email, topicSlugs: selectedSlugs, localePreference: selectedLocale });

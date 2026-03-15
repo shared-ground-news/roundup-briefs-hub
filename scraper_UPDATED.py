@@ -759,8 +759,8 @@ def setup_database():
                 pass
         conn.commit()
 
-    # Purge articles older than 180 days
-    cutoff = (datetime.now() - timedelta(days=180)).isoformat()
+    # Purge articles older than 30 days
+    cutoff = (datetime.now() - timedelta(days=30)).isoformat()
     cursor.execute(f"DELETE FROM articles WHERE scraped_at < {ph}", [cutoff])
     conn.commit()
     conn.close()

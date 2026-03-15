@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { type Article, getSourceBorderColor } from "@/lib/constants";
+import { Languages } from "lucide-react";
 import BookmarkButton from "@/components/BookmarkButton";
 
 interface ArticleCardProps {
@@ -77,6 +78,22 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
             <span className="text-[0.7rem] text-muted-foreground whitespace-nowrap">
               {dateStr}
             </span>
+            {/* Translate — opens Google Translate in new tab */}
+            <a
+              href={
+                article.locale === "de"
+                  ? `https://translate.google.com/translate?sl=de&tl=en&u=${encodeURIComponent(article.link)}`
+                  : `https://translate.google.com/translate?sl=en&tl=de&u=${encodeURIComponent(article.link)}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              title={article.locale === "de" ? "translate to english" : "auf deutsch lesen"}
+              aria-label={article.locale === "de" ? "translate to english" : "auf deutsch lesen"}
+              onClick={(e) => e.stopPropagation()}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Languages className="w-3.5 h-3.5" strokeWidth={1.5} />
+            </a>
             {/* Bookmark — stops propagation so the card link doesn't fire */}
             <BookmarkButton article={article} />
           </div>
@@ -115,7 +132,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
 
         {/* Read more */}
         <span className="text-xs text-muted-foreground group-hover:underline mt-auto">
-          Read full article →
+          read full article →
         </span>
       </div>
     </a>

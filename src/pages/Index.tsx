@@ -3,6 +3,8 @@ import Masthead from "@/components/Masthead";
 import FilterBar from "@/components/FilterBar";
 import ArticleGrid from "@/components/ArticleGrid";
 import SiteFooter from "@/components/SiteFooter";
+import ContactModal from "@/components/ContactModal";
+import Sidebar from "@/components/Sidebar";
 import AboutPage from "@/components/AboutPage";
 import ImprintPage from "@/components/ImprintPage";
 import ScrollButtons from "@/components/ScrollButton";
@@ -22,6 +24,8 @@ const Index = ({ locale }: IndexProps) => {
   const [showAbout, setShowAbout] = useState(false);
   const [showImprint, setShowImprint] = useState(false);
   const [newsletterOpen, setNewsletterOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Keep AuthContext locale in sync so OnboardingModal uses the right language
   useEffect(() => { setLocale(locale); }, [locale, setLocale]);
@@ -67,61 +71,79 @@ const Index = ({ locale }: IndexProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Masthead
-        stats={stats}
-        showAbout={showAbout}
-        onAboutToggle={handleAboutToggle}
+    <div className="min-h-screen bg-background flex">
+      <Sidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
         locale={locale}
         t={t}
+        onAboutToggle={handleAboutToggle}
         onNewsletterClick={() => setNewsletterOpen(true)}
+        onContactClick={() => setContactOpen(true)}
       />
 
-      {showImprint ? (
-        <ImprintPage onClose={handleImprintClose} />
-      ) : showAbout ? (
-        <AboutPage />
-      ) : (
-        <>
-          <FilterBar
-            filters={filters}
-            setFilters={setFilters}
-            localeSources={SOURCES_BY_LOCALE[locale]}
-            articleCount={articles.length}
-            totalCount={totalCount}
-            isFiltered={isFiltered}
-            clearFilters={clearFilters}
-            locale={locale}
-            t={t}
-          />
-          <div className="pt-4 pb-8">
-            <ArticleGrid
-              articles={articles}
-              loading={loading}
-              error={error}
+      {/* Main content — shifts right on desktop to make room for fixed sidebar */}
+      <div className="flex-1 min-w-0 lg:pl-60">
+        <Masthead
+          stats={stats}
+          showAbout={showAbout}
+          onAboutToggle={handleAboutToggle}
+          locale={locale}
+          t={t}
+          onNewsletterClick={() => setNewsletterOpen(true)}
+          onMenuClick={() => setSidebarOpen((v) => !v)}
+        />
+
+        {showImprint ? (
+          <ImprintPage onClose={handleImprintClose} />
+        ) : showAbout ? (
+          <AboutPage />
+        ) : (
+          <>
+            <FilterBar
+              filters={filters}
+              setFilters={setFilters}
+              localeSources={SOURCES_BY_LOCALE[locale]}
+              articleCount={articles.length}
+              totalCount={totalCount}
               isFiltered={isFiltered}
-              isGrouped={isGrouped}
               clearFilters={clearFilters}
-              page={page}
-              totalPages={totalPages}
-              setPage={setPage}
-              onTopicClick={handleTopicClick}
+              locale={locale}
               t={t}
             />
-          </div>
-        </>
-      )}
+            <div className="pt-4 pb-8">
+              <ArticleGrid
+                articles={articles}
+                loading={loading}
+                error={error}
+                isFiltered={isFiltered}
+                isGrouped={isGrouped}
+                clearFilters={clearFilters}
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+                onTopicClick={handleTopicClick}
+                t={t}
+              />
+            </div>
+          </>
+        )}
 
-      <SiteFooter onNewsletterClick={() => setNewsletterOpen(true)} t={t} />
+        <SiteFooter
+          onNewsletterClick={() => setNewsletterOpen(true)}
+          onContactClick={() => setContactOpen(true)}
+          t={t}
+        />
 
-      {/* Impressum link — fixed at very bottom */}
-      <div className="w-full text-center py-3 border-t border-border bg-background">
-        <button
-          onClick={handleImprintOpen}
-          className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
-        >
-          Impressum / Imprint
-        </button>
+        {/* Impressum link — fixed at very bottom */}
+        <div className="w-full text-center py-3 border-t border-border bg-background">
+          <button
+            onClick={handleImprintOpen}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          >
+            Impressum / Imprint
+          </button>
+        </div>
       </div>
 
       <ScrollButtons />
@@ -130,6 +152,12 @@ const Index = ({ locale }: IndexProps) => {
         open={newsletterOpen}
         onClose={() => setNewsletterOpen(false)}
         locale={locale}
+      />
+
+      <ContactModal
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        t={t}
       />
     </div>
   );

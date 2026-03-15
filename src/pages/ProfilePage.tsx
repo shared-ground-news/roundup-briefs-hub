@@ -52,7 +52,7 @@ export default function ProfilePage({ locale }: ProfilePageProps) {
     e.preventDefault();
     setNlEmailError("");
     if (!nlEmail.includes("@")) {
-      setNlEmailError("Please enter a valid email address.");
+      setNlEmailError("please enter a valid email address.");
       return;
     }
     await subscribe({ email: nlEmail, topicSlugs: followedSlugs, localePreference: nlLocale });
@@ -132,10 +132,10 @@ export default function ProfilePage({ locale }: ProfilePageProps) {
         {/* ── Saved articles ── */}
         <section className="space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Saved articles
+            saved articles
           </h2>
           {savedLoading ? (
-            <p className="text-sm text-muted-foreground">Loading…</p>
+            <p className="text-sm text-muted-foreground">loading…</p>
           ) : (
             <p className="text-sm">
               {savedArticles.length > 0 ? (
@@ -145,11 +145,11 @@ export default function ProfilePage({ locale }: ProfilePageProps) {
                     to={`/${locale}/saved`}
                     className="text-primary underline underline-offset-2"
                   >
-                    View saved articles →
+                    view saved articles →
                   </Link>
                 </>
               ) : (
-                <span className="text-muted-foreground">Nothing saved yet.</span>
+                <span className="text-muted-foreground">nothing saved yet.</span>
               )}
             </p>
           )}
@@ -204,7 +204,7 @@ export default function ProfilePage({ locale }: ProfilePageProps) {
         {/* ── Account ── */}
         <section className="space-y-3">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Account
+            account
           </h2>
           <p className="text-sm text-muted-foreground">{user.email}</p>
           <Button variant="outline" size="sm" onClick={handleSignOut}>

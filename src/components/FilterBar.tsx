@@ -102,13 +102,13 @@ const FilterBar = ({
     [setFilters]
   );
 
-  const selectToday = useCallback(() => {
-    setFilters((f) => ({
-      ...f,
-      timeRange: f.timeRange === "today" ? null : "today",
-      dateFrom: "",
-      dateTo: "",
-    }));
+  const toIsoDate = (d: Date) => d.toISOString().slice(0, 10);
+
+  const todayStr = toIsoDate(new Date());
+  const thirtyDaysAgoStr = toIsoDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
+
+  const selectQuickDate = useCallback((from: string, to: string) => {
+    setFilters((f) => ({ ...f, dateFrom: from, dateTo: to, timeRange: null }));
   }, [setFilters]);
 
   const setDateFrom = useCallback(
@@ -120,7 +120,7 @@ const FilterBar = ({
     [setFilters]
   );
   const clearDates = useCallback(
-    () => setFilters((f) => ({ ...f, dateFrom: "", dateTo: "" })),
+    () => setFilters((f) => ({ ...f, dateFrom: "", dateTo: "", timeRange: null })),
     [setFilters]
   );
 
@@ -195,23 +195,36 @@ const FilterBar = ({
           })}
         </div>
 
-        {/* ROW B — Today + Custom Date Range */}
+        {/* ROW B — Quick date buttons + Custom Date Range */}
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={selectToday}
-            className={`
-              px-3 py-1.5 rounded-sm text-xs font-medium transition-colors whitespace-nowrap select-none
-              ${filters.timeRange === "today"
-                ? "bg-chip-active text-chip-active-foreground"
-                : "bg-secondary text-secondary-foreground hover:bg-border"}
-            `}
-          >
-            {t.today}
-          </button>
+          {/* Quick date buttons */}
+          {[
+            { label: t.quickToday,     from: todayStr,                                       to: todayStr },
+            { label: t.quickYesterday, from: toIsoDate(new Date(Date.now() - 86400000)),     to: toIsoDate(new Date(Date.now() - 86400000)) },
+            { label: t.quickLastWeek,  from: toIsoDate(new Date(Date.now() - 7 * 86400000)), to: todayStr },
+          ].map(({ label, from, to }) => {
+            const active = filters.dateFrom === from && filters.dateTo === to && !filters.timeRange;
+            return (
+              <button
+                key={label}
+                onClick={() => active ? clearDates() : selectQuickDate(from, to)}
+                className={`
+                  px-3 py-1.5 rounded-sm text-xs font-medium transition-colors whitespace-nowrap select-none
+                  ${active
+                    ? "bg-chip-active text-chip-active-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-border"}
+                `}
+              >
+                {label}
+              </button>
+            );
+          })}
           <span className="hidden sm:inline text-muted-foreground text-xs mx-1">📅</span>
           <input
             type="date"
             value={filters.dateFrom}
+            min={thirtyDaysAgoStr}
+            max={todayStr}
             onChange={(e) => setDateFrom(e.target.value)}
             className="text-xs px-2 py-1.5 rounded-sm border border-border bg-card text-foreground w-full sm:w-auto"
             aria-label="Date from"
@@ -220,6 +233,8 @@ const FilterBar = ({
           <input
             type="date"
             value={filters.dateTo}
+            min={thirtyDaysAgoStr}
+            max={todayStr}
             onChange={(e) => setDateTo(e.target.value)}
             className="text-xs px-2 py-1.5 rounded-sm border border-border bg-card text-foreground w-full sm:w-auto"
             aria-label="Date to"
