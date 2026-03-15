@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
+import MapPage from "./pages/MapPage";
 import SavedPage from "./pages/SavedPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,9 @@ const App = () => (
             {/* Locale feed routes */}
             <Route path="/en" element={<Index locale={"en" as Locale} />} />
             <Route path="/de" element={<Index locale={"de" as Locale} />} />
+
+            {/* World map */}
+            <Route path="/map" element={<MapPage />} />
 
             {/* Saved articles */}
             <Route path="/saved" element={<Navigate to="/en/saved" replace />} />
