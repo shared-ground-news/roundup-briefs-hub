@@ -5,6 +5,7 @@ import ArticleGrid from "@/components/ArticleGrid";
 import SiteFooter from "@/components/SiteFooter";
 import ContactModal from "@/components/ContactModal";
 import Sidebar from "@/components/Sidebar";
+import ScrapingLogicPage from "@/components/ScrapingLogicPage";
 import AboutPage from "@/components/AboutPage";
 import ImprintPage from "@/components/ImprintPage";
 import ScrollButtons from "@/components/ScrollButton";
@@ -26,6 +27,7 @@ const Index = ({ locale }: IndexProps) => {
   const [newsletterOpen, setNewsletterOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showScrapingLogic, setShowScrapingLogic] = useState(false);
 
   // Keep AuthContext locale in sync so OnboardingModal uses the right language
   useEffect(() => { setLocale(locale); }, [locale, setLocale]);
@@ -58,6 +60,7 @@ const Index = ({ locale }: IndexProps) => {
   const handleAboutToggle = () => {
     setShowAbout((v) => !v);
     setShowImprint(false);
+    setShowScrapingLogic(false);
   };
 
   const handleImprintOpen = () => {
@@ -80,6 +83,7 @@ const Index = ({ locale }: IndexProps) => {
         onAboutToggle={handleAboutToggle}
         onNewsletterClick={() => setNewsletterOpen(true)}
         onContactClick={() => setContactOpen(true)}
+        onScrapingLogicClick={() => { setShowScrapingLogic(true); setShowAbout(false); setShowImprint(false); }}
       />
 
       {/* Main content — shifts right on desktop to make room for fixed sidebar */}
@@ -96,6 +100,8 @@ const Index = ({ locale }: IndexProps) => {
 
         {showImprint ? (
           <ImprintPage onClose={handleImprintClose} />
+        ) : showScrapingLogic ? (
+          <ScrapingLogicPage onClose={() => setShowScrapingLogic(false)} />
         ) : showAbout ? (
           <AboutPage />
         ) : (

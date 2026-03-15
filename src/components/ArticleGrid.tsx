@@ -61,12 +61,6 @@ const GroupedView = ({ articles, onTopicClick, t }: GroupedViewProps) => {
     grouped[primary].push(article);
   }
 
-  // Also collect articles with no recognised topic
-  const uncategorised = articles.filter((a) => {
-    const primary = (a.topics ?? "").split(",")[0].trim();
-    return !primary;
-  });
-
   // Render sections in TOPICS order (skip "All Topics" entry)
   const topicDefs = TOPICS.filter((t) => t.label !== "All Topics");
 
@@ -78,8 +72,23 @@ const GroupedView = ({ articles, onTopicClick, t }: GroupedViewProps) => {
     }))
     .filter((s) => s.articles.length > 0);
 
-  if (sections.length === 0 && uncategorised.length === 0) {
+  // Articles not captured by any named section (empty topics, slug-keyed, or DE topic names)
+  const renderedIds = new Set(sections.flatMap((s) => s.articles.map((a) => a.id)));
+  const fallback = articles.filter((a) => !renderedIds.has(a.id));
+
+  if (sections.length === 0 && fallback.length === 0) {
     return null; // parent handles empty state
+  }
+
+  // No named sections at all → flat grid (e.g. DE articles with unrecognised topic labels)
+  if (sections.length === 0) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {fallback.map((article) => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
+      </div>
+    );
   }
 
   return (

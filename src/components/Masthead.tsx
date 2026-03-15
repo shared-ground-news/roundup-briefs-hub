@@ -18,7 +18,7 @@ interface MastheadProps {
 
 const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClick, onMenuClick }: MastheadProps) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, requireAuth } = useAuth();
 
   const lastScraped = stats?.last_scraped
     ? format(new Date(stats.last_scraped), "d MMM yyyy, HH:mm")
@@ -70,6 +70,17 @@ const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClic
               <Mail className="w-4 h-4" strokeWidth={1.5} />
             </button>
 
+            {/* Sign in — only when logged out */}
+            {!user && (
+              <button
+                onClick={() => requireAuth(() => {})}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors font-sans"
+                aria-label="Sign in"
+              >
+                sign in
+              </button>
+            )}
+
             {/* Saved link — always visible; filled icon when signed in */}
             <Link
               to={`/${locale}/saved`}
@@ -96,26 +107,25 @@ const Masthead = ({ stats, showAbout, onAboutToggle, locale, t, onNewsletterClic
               </Link>
             )}
 
-            {/* Locale toggle */}
-            <div className="flex items-center gap-1 text-xs font-sans">
+            {/* Locale toggle — pill style */}
+            <div className="flex items-center rounded border border-border text-xs font-sans overflow-hidden">
               <button
                 onClick={() => navigate("/en")}
-                className={`transition-colors ${
+                className={`px-2.5 py-1 transition-colors ${
                   locale === "en"
-                    ? "text-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-foreground text-background font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                 }`}
                 aria-label="Switch to English"
               >
                 EN
               </button>
-              <span className="text-muted-foreground select-none">/</span>
               <button
                 onClick={() => navigate("/de")}
-                className={`transition-colors ${
+                className={`px-2.5 py-1 transition-colors border-l border-border ${
                   locale === "de"
-                    ? "text-foreground font-semibold"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-foreground text-background font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                 }`}
                 aria-label="Zu Deutsch wechseln"
               >
