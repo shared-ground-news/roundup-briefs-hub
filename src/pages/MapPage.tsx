@@ -212,7 +212,18 @@ const MapPage = () => {
       </div>
 
       {/* Top-left: back link */}
+<<<<<<< HEAD
       <div style={{ position: "absolute", top: "1.5rem", left: "1.5rem", zIndex: 20 }}>
+=======
+      <div
+        style={{
+          position: "absolute",
+          top: "1.5rem",
+          left: "1.5rem",
+          zIndex: 20,
+        }}
+      >
+>>>>>>> 194284fa19ed141a9feb205b558a7b8fab196a24
         <Link to="/en" style={{ ...NAV_LINK_STYLE, color: "#555" }}>
           ← shared ground
         </Link>
