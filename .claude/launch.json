@@ -3,13 +3,13 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/System/Volumes/Data/private/tmp/node-v20.18.3-darwin-arm64/bin/node",
+      "runtimeArgs": ["./node_modules/.bin/vite", "--port", "8080"],
       "port": 8080
     },
     {
       "name": "preview",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "/System/Volumes/Data/private/tmp/node-v20.18.3-darwin-arm64/lib/node_modules/npm/bin/npm",
       "runtimeArgs": ["run", "preview"],
       "port": 4173
     }

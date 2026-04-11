@@ -1,206 +1,216 @@
-import { format } from "date-fns";
-import { type Article, getSourceBorderColor } from "@/lib/constants";
-import { Languages } from "lucide-react";
-import BookmarkButton from "@/components/BookmarkButton";
+import { TOPIC_COLORS, getSourceBorderColor } from "@/lib/constants";
+import type { Article } from "@/lib/constants";
 
-export type CardVariant = "hero" | "medium" | "default";
+type Variant = "hero" | "medium" | "default";
 
-interface ArticleCardProps {
-  article: Article;
-  variant?: CardVariant;
+interface Props {
+  article: Article & { image_url?: string };
+  variant?: Variant;
 }
 
-const MAX_VISIBLE_TAGS = 3;
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return "";
+  try {
+    return new Intl.DateTimeFormat("de-DE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(dateStr));
+  } catch {
+    return "";
+  }
+}
 
-const TOPIC_ICONS: Record<string, string> = {
-  "Bodily Autonomy & Reproductive Justice": "🩺",
-  "Anti-Rights & Backlash Movements":       "🔥",
-  "Economic & Labour Justice":              "💰",
-  "Migration, Borders & Citizenship":       "🌍",
-  "State Power, Law & Governance":          "⚖️",
-  "Violence, Safety & Criminal Justice":    "🛡️",
-  "Climate & Environmental Justice":        "🌿",
-  "Technology & Digital Power":             "💻",
-  "Culture, Media & Narrative Power":       "🎭",
-};
-
-const MetaRow = ({
-  article,
-  dateStr,
-  isPaywalled,
-}: {
-  article: Article;
-  dateStr: string;
-  isPaywalled: boolean;
-}) => {
-  const translateLink =
-    article.locale === "de"
-      ? `https://translate.google.com/translate?sl=de&tl=en&u=${encodeURIComponent(article.link)}`
-      : `https://translate.google.com/translate?sl=en&tl=de&u=${encodeURIComponent(article.link)}`;
-  const translateLabel =
-    article.locale === "de" ? "translate to english" : "auf deutsch lesen";
-
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="inline-block px-2 py-0.5 rounded-sm text-[0.68rem] font-semibold uppercase tracking-wider bg-secondary text-muted-foreground truncate max-w-[55%]">
-        {article.source}
-      </span>
-      <div className="flex items-center gap-1.5 flex-shrink-0">
-        {isPaywalled && (
-          <span title="Paywalled article" className="text-[0.7rem] text-amber-500 leading-none select-none">
-            🔒
-          </span>
-        )}
-        <span className="text-[0.7rem] text-muted-foreground whitespace-nowrap">{dateStr}</span>
-        <a
-          href={translateLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={translateLabel}
-          aria-label={translateLabel}
-          onClick={(e) => e.stopPropagation()}
-          className="text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <Languages className="w-3.5 h-3.5" strokeWidth={1.5} />
-        </a>
-        <BookmarkButton article={article} />
-      </div>
-    </div>
-  );
-};
-
-const TopicTags = ({ topics, max = MAX_VISIBLE_TAGS }: { topics: string[]; max?: number }) => {
-  if (topics.length === 0) return null;
-  const visible = topics.slice(0, max);
-  const extra = topics.length - max;
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {visible.map((topic) => (
-        <span
-          key={topic}
-          className="inline-block px-2 py-0.5 text-[0.65rem] font-medium border border-border bg-background text-foreground rounded-none"
-        >
-          {TOPIC_ICONS[topic] ? `${TOPIC_ICONS[topic]} ` : ""}
-          {topic}
-        </span>
-      ))}
-      {extra > 0 && (
-        <span className="inline-block px-2 py-0.5 text-[0.65rem] font-medium text-muted-foreground">
-          +{extra}
-        </span>
-      )}
-    </div>
-  );
-};
-
-const ArticleCard = ({ article, variant = "default" }: ArticleCardProps) => {
-  const stripColor = getSourceBorderColor(article.source);
-  const topics = (article.topics || "")
+function TopicTags({ topics, limit = 3 }: { topics: string; limit?: number }) {
+  const list = (topics || "")
     .split(",")
     .map((t) => t.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .slice(0, limit);
 
-  const displayDate = article.published_at || article.scraped_at;
-  const dateStr = displayDate ? format(new Date(displayDate), "d MMM yyyy") : "";
-  const isPaywalled = article.is_paywalled === true;
+  if (list.length === 0) return null;
 
-  const baseClass =
-    "block bg-card border border-border rounded-sm overflow-hidden transition-all duration-150 hover:bg-surface-hover hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group";
+  return (
+    <div className="flex flex-wrap gap-1">
+      {list.map((t) => {
+        const colors = TOPIC_COLORS[t];
+        return (
+          <span
+            key={t}
+            className="inline-flex items-center px-1.5 py-0.5 text-[0.62rem] font-medium rounded-sm border"
+            style={
+              colors
+                ? { backgroundColor: colors.bg, color: colors.text, borderColor: colors.border }
+                : { backgroundColor: "var(--secondary)", color: "var(--foreground)", borderColor: "var(--border)" }
+            }
+          >
+            {t}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
-  // ── Hero ──────────────────────────────────────────────────────────────────────
+const ArtikelLink = ({ href, className }: { href: string; className: string }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+    {"Artikel lesen \u2192"}
+  </a>
+);
+
+const ArticleCard = ({ article, variant = "default" }: Props) => {
+  const borderColor = getSourceBorderColor(article.source);
+  const date = formatDate(article.published_at || article.scraped_at);
+  const imageUrl = (article as Article & { image_url?: string }).image_url;
+
+  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const parent = e.currentTarget.parentElement;
+    if (parent) parent.style.display = "none";
+  };
+
   if (variant === "hero") {
     return (
-      <a
-        href={article.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={baseClass}
-        style={{ borderLeft: `4px solid ${stripColor}`, boxShadow: "var(--tile-shadow)" }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow-hover)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow)"; }}
-      >
-        <div className="p-6 flex flex-col gap-3">
-          <MetaRow article={article} dateStr={dateStr} isPaywalled={isPaywalled} />
-          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold leading-tight text-foreground group-hover:text-primary transition-colors line-clamp-3">
-            {article.title}
-          </h2>
-          {article.summary && (
-            <p className="text-sm text-muted-foreground line-clamp-5 leading-relaxed">
-              {article.summary}
-            </p>
+      <article className="group bg-card border border-border overflow-hidden hover:shadow-md transition-shadow">
+        <div className="flex flex-col sm:flex-row">
+          {imageUrl && (
+            <div className="sm:w-[48%] flex-shrink-0 overflow-hidden">
+              <img
+                src={imageUrl}
+                alt={article.title}
+                className="w-full h-56 sm:h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                onError={handleImgError}
+              />
+            </div>
           )}
-          <div className="flex items-end justify-between gap-2 mt-auto pt-1">
-            <TopicTags topics={topics} />
-            <span className="text-xs text-muted-foreground group-hover:underline whitespace-nowrap ml-auto">
-              read full article →
-            </span>
+          <div
+            className="flex flex-col justify-between p-5 sm:p-6 flex-1"
+            style={{
+              borderLeft: imageUrl ? "3px solid " + borderColor : undefined,
+              borderTop: !imageUrl ? "3px solid " + borderColor : undefined,
+            }}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {article.source}
+                </span>
+                {date && (
+                  <span className="text-xs text-muted-foreground">{date}</span>
+                )}
+                {article.is_paywalled && (
+                  <span className="text-xs text-muted-foreground">🔒</span>
+                )}
+              </div>
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-foreground leading-snug mb-3 group-hover:text-primary transition-colors">
+                {article.title}
+              </h2>
+              {article.summary && (
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4">
+                  {article.summary}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-3 mt-2">
+              {article.topics && <TopicTags topics={article.topics} limit={3} />}
+              <ArtikelLink
+                href={article.link}
+                className="text-xs font-semibold text-primary hover:underline underline-offset-2"
+              />
+            </div>
           </div>
         </div>
-      </a>
+      </article>
     );
   }
 
-  // ── Medium ────────────────────────────────────────────────────────────────────
   if (variant === "medium") {
     return (
-      <a
-        href={article.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={baseClass}
-        style={{ borderTop: `3px solid ${stripColor}`, boxShadow: "var(--tile-shadow)" }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow-hover)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow)"; }}
+      <article
+        className="group bg-card border border-border overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full"
+        style={{ borderTop: "3px solid " + borderColor }}
       >
-        <div className="p-5 flex flex-col gap-3 h-full">
-          <MetaRow article={article} dateStr={dateStr} isPaywalled={isPaywalled} />
-          <h2 className="font-serif-display text-lg font-bold leading-snug text-foreground group-hover:text-primary transition-colors line-clamp-3">
-            {article.title}
-          </h2>
-          {article.summary && (
-            <p className="text-[0.85rem] text-muted-foreground line-clamp-3 leading-relaxed">
-              {article.summary}
-            </p>
-          )}
-          <div className="flex flex-col gap-2 mt-auto">
-            <TopicTags topics={topics} max={2} />
-            <span className="text-xs text-muted-foreground group-hover:underline">
-              read full article →
+        {imageUrl && (
+          <div className="overflow-hidden">
+            <img
+              src={imageUrl}
+              alt={article.title}
+              className="w-full h-44 object-cover group-hover:scale-[1.02] transition-transform duration-300"
+              onError={handleImgError}
+            />
+          </div>
+        )}
+        <div className="flex flex-col flex-1 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[0.65rem] font-semibold text-muted-foreground uppercase tracking-wider">
+              {article.source}
             </span>
+            {date && (
+              <span className="text-[0.65rem] text-muted-foreground">{date}</span>
+            )}
+            {article.is_paywalled && (
+              <span className="text-[0.65rem] text-muted-foreground">🔒</span>
+            )}
+          </div>
+          <h3 className="text-base font-bold text-foreground leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-3 flex-1">
+            {article.title}
+          </h3>
+          <div className="flex flex-col gap-2 mt-auto">
+            {article.topics && <TopicTags topics={article.topics} limit={2} />}
+            <ArtikelLink
+              href={article.link}
+              className="text-xs text-primary hover:underline underline-offset-2 font-medium"
+            />
           </div>
         </div>
-      </a>
+      </article>
     );
   }
 
-  // ── Default ───────────────────────────────────────────────────────────────────
+  // default variant
   return (
-    <a
-      href={article.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={baseClass}
-      style={{ boxShadow: "var(--tile-shadow)" }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow-hover)"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "var(--tile-shadow)"; }}
+    <article
+      className="group bg-card border border-border overflow-hidden hover:shadow-sm transition-shadow flex flex-col h-full"
+      style={{ borderTop: "3px solid " + borderColor }}
     >
-      <div className="h-[3px] w-full" style={{ backgroundColor: stripColor }} />
-      <div className="p-5 flex flex-col gap-3">
-        <MetaRow article={article} dateStr={dateStr} isPaywalled={isPaywalled} />
-        <h2 className="font-serif-display text-[1.2rem] font-bold leading-snug text-foreground group-hover:text-primary transition-colors line-clamp-2">
+      {imageUrl && (
+        <div className="overflow-hidden">
+          <img
+            src={imageUrl}
+            alt={article.title}
+            className="w-full h-36 object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            onError={handleImgError}
+          />
+        </div>
+      )}
+      <div className="flex flex-col flex-1 p-3">
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <span className="text-[0.6rem] font-semibold text-muted-foreground uppercase tracking-wider">
+            {article.source}
+          </span>
+          {date && (
+            <span className="text-[0.6rem] text-muted-foreground">{date}</span>
+          )}
+          {article.is_paywalled && (
+            <span className="text-[0.6rem] text-muted-foreground">🔒</span>
+          )}
+        </div>
+        <h3 className="text-sm font-bold text-foreground leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3 flex-1">
           {article.title}
-        </h2>
-        {article.summary && (
-          <p className="text-[0.85rem] text-muted-foreground line-clamp-3 leading-relaxed">
+        </h3>
+        {!imageUrl && article.summary && (
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 mb-2">
             {article.summary}
           </p>
         )}
-        <TopicTags topics={topics} />
-        <span className="text-xs text-muted-foreground group-hover:underline mt-auto">
-          read full article →
-        </span>
+        <div className="flex flex-col gap-1.5 mt-auto">
+          {article.topics && <TopicTags topics={article.topics} limit={2} />}
+          <ArtikelLink
+            href={article.link}
+            className="text-xs text-primary hover:underline underline-offset-2"
+          />
+        </div>
       </div>
-    </a>
+    </article>
   );
 };
 

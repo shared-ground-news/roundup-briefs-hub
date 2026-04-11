@@ -2,14 +2,22 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
-import MapPage from "./pages/MapPage";
-import SavedPage from "./pages/SavedPage";
-import ProfilePage from "./pages/ProfilePage";
-import NotFound from "./pages/NotFound";
-import type { Locale } from "@/lib/constants";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Pages — Alex's visual design
+import MapPage        from "./pages/MapPage";
+import FeedPage       from "./pages/FeedPage";
+import ThemenPage     from "./pages/ThemenPage";
+import AnalysisPage   from "./pages/AnalysisPage";
+import NewsletterPage from "./pages/NewsletterPage";
+import UeberUnsPage   from "./pages/UeberUnsPage";
+import NotFound       from "./pages/NotFound";
+
+// Auth-protected pages — Valeria's originals (kept unchanged)
+// Uncomment once the Supabase auth files are present:
+// import { AuthProvider } from "./hooks/useAuth";
+// import SavedPage   from "./pages/SavedPage";
+// import ProfilePage from "./pages/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -19,32 +27,48 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            {/* Redirect bare root to English */}
-            <Route path="/" element={<Navigate to="/en" replace />} />
+        {/* <AuthProvider> */}
+        <Routes>
 
-            {/* Locale feed routes */}
-            <Route path="/en" element={<Index locale={"en" as Locale} />} />
-            <Route path="/de" element={<Index locale={"de" as Locale} />} />
+          {/* ── Landing: interactive world map ── */}
+          <Route path="/" element={<MapPage />} />
 
-            {/* World map */}
-            <Route path="/map" element={<MapPage />} />
+          {/* ── Country feeds ── */}
+          {/* DACH → German locale feed */}
+          <Route path="/de" element={<FeedPage country="Germany"       countryName="Deutschland" />} />
+          <Route path="/at" element={<FeedPage country="Austria"       countryName="Österreich" />} />
+          <Route path="/ch" element={<FeedPage country="Switzerland"   countryName="Schweiz" />} />
 
-            {/* Saved articles */}
-            <Route path="/saved" element={<Navigate to="/en/saved" replace />} />
-            <Route path="/en/saved" element={<SavedPage locale={"en" as Locale} />} />
-            <Route path="/de/saved" element={<SavedPage locale={"de" as Locale} />} />
+          {/* International → English locale feed */}
+          <Route path="/es" element={<FeedPage country="Spain"         countryName="Spanien" />} />
+          <Route path="/it" element={<FeedPage country="Italy"         countryName="Italien" />} />
+          <Route path="/us" element={<FeedPage country="United States" countryName="USA" />} />
+          <Route path="/cn" element={<FeedPage country="China"         countryName="China" />} />
+          <Route path="/ug" element={<FeedPage country="Uganda"        countryName="Uganda" />} />
+          <Route path="/fi" element={<FeedPage country="Finland"       countryName="Finnland" />} />
+          <Route path="/tr" element={<FeedPage country="Turkey"        countryName="Türkei" />} />
+          <Route path="/ir" element={<FeedPage country="Iran"          countryName="Iran" />} />
+          <Route path="/za" element={<FeedPage country="South Africa"  countryName="Südafrika" />} />
+          <Route path="/in" element={<FeedPage country="India"         countryName="Indien" />} />
 
-            {/* Profile */}
-            <Route path="/profile" element={<Navigate to="/en/profile" replace />} />
-            <Route path="/en/profile" element={<ProfilePage locale={"en" as Locale} />} />
-            <Route path="/de/profile" element={<ProfilePage locale={"de" as Locale} />} />
+          {/* ── Static pages ── */}
+          <Route path="/themen"     element={<ThemenPage />} />
+          <Route path="/analyse"    element={<AnalysisPage />} />
+          <Route path="/newsletter" element={<NewsletterPage />} />
+          <Route path="/ueber-uns"  element={<UeberUnsPage />} />
 
-            {/* Catch-all */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
+          {/* ── Auth-protected pages (Valeria's) ── */}
+          {/* Uncomment once useAuth / SavedPage / ProfilePage are present: */}
+          {/* <Route path="/de/saved"      element={<SavedPage locale="de" />} /> */}
+          {/* <Route path="/en/saved"      element={<SavedPage locale="en" />} /> */}
+          {/* <Route path="/de/profile"    element={<ProfilePage locale="de" />} /> */}
+          {/* <Route path="/en/profile"    element={<ProfilePage locale="en" />} /> */}
+
+          {/* ── 404 ── */}
+          <Route path="*" element={<NotFound />} />
+
+        </Routes>
+        {/* </AuthProvider> */}
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
-const ScrollButtons = () => {
+const ScrollButton = () => {
   const [showTop, setShowTop] = useState(false);
   const [showBottom, setShowBottom] = useState(true);
 
@@ -16,7 +16,7 @@ const ScrollButtons = () => {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // run once on mount
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,8 +32,8 @@ const ScrollButtons = () => {
         <button
           onClick={scrollToTop}
           className="w-9 h-9 rounded-sm bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex items-center justify-center shadow-md"
-          aria-label="Scroll to top"
-          title="Back to top"
+          aria-label="Nach oben"
+          title="Nach oben"
         >
           <ChevronUp size={16} />
         </button>
@@ -42,8 +42,8 @@ const ScrollButtons = () => {
         <button
           onClick={scrollToBottom}
           className="w-9 h-9 rounded-sm bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors flex items-center justify-center shadow-md"
-          aria-label="Scroll to bottom"
-          title="Jump to bottom"
+          aria-label="Nach unten"
+          title="Nach unten"
         >
           <ChevronDown size={16} />
         </button>
@@ -52,4 +52,4 @@ const ScrollButtons = () => {
   );
 };
 
-export default ScrollButtons;
+export default ScrollButton;
