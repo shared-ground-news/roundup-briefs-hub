@@ -30,7 +30,11 @@ MAX_ARTICLES_PER_SOURCE = 30
 # ─────────────────────────────────────────────────────────────────────────────
 def get_connection():
     if USE_POSTGRES:
-        return psycopg2.connect(DATABASE_URL)
+        # Render Postgres requires SSL; append sslmode if not already present
+        url = DATABASE_URL
+        if "sslmode" not in url:
+            url = url + ("&" if "?" in url else "?") + "sslmode=require"
+        return psycopg2.connect(url)
     return sqlite3.connect(DB_FILE)
 
 
