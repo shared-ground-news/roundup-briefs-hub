@@ -14,13 +14,26 @@ import os
 from datetime import datetime, timedelta
 
 # ── Postgres support (optional — only used when DATABASE_URL is set) ──────────
-try:
-    import psycopg2
-    DATABASE_URL = os.environ.get("DATABASE_URL", "")
-    USE_POSTGRES = bool(DATABASE_URL)
-except ImportError:
-    USE_POSTGRES = False
-    DATABASE_URL = ""
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
+USE_POSTGRES = bool(DATABASE_URL)
+
+if USE_POSTGRES:
+    try:
+        import psycopg2
+        _DRIVER = "psycopg2"
+    except ImportError:
+        try:
+            import pg8000.dbapi as _pg8000_dbapi
+            _DRIVER = "pg8000"
+        except ImportError:
+            try:
+                import psycopg as _psycopg3
+                _DRIVER = "psycopg3"
+            except ImportError:
+                _DRIVER = None
+                USE_POSTGRES = False
+else:
+    _DRIVER = None
 
 DB_FILE = "news.db"
 MAX_ARTICLES_PER_SOURCE = 30
@@ -30,37 +43,43 @@ MAX_ARTICLES_PER_SOURCE = 30
 # ─────────────────────────────────────────────────────────────────────────────
 def get_connection():
     if USE_POSTGRES:
-        import urllib.parse, time
+        import urllib.parse, time, ssl
         parsed = urllib.parse.urlparse(DATABASE_URL)
+        host     = parsed.hostname
+        port     = parsed.port or 5432
+        dbname   = parsed.path.lstrip("/")
+        user     = parsed.username
+        password = parsed.password
         last_err = None
 
         for attempt in range(3):
             try:
-                # Try psycopg3 first (better SSL support), fall back to psycopg2
-                try:
-                    import psycopg
+                if _DRIVER == "pg8000":
+                    ssl_ctx = ssl.create_default_context()
+                    ssl_ctx.check_hostname = False
+                    ssl_ctx.verify_mode = ssl.CERT_NONE
+                    conn = _pg8000_dbapi.connect(
+                        host=host, port=port, database=dbname,
+                        user=user, password=password,
+                        ssl_context=ssl_ctx,
+                        timeout=30,
+                    )
+                elif _DRIVER == "psycopg3":
                     url = DATABASE_URL
                     if "sslmode" not in url:
                         url += ("&" if "?" in url else "?") + "sslmode=require"
-                    conn = psycopg.connect(url)
-                    conn._is_psycopg3 = True
-                    return conn
-                except ImportError:
-                    pass  # psycopg3 not available, use psycopg2
-
-                conn = psycopg2.connect(
-                    host=parsed.hostname,
-                    port=parsed.port or 5432,
-                    dbname=parsed.path.lstrip("/"),
-                    user=parsed.username,
-                    password=parsed.password,
-                    sslmode="require",
-                    connect_timeout=30,
-                )
+                    conn = _psycopg3.connect(url)
+                else:  # psycopg2
+                    conn = psycopg2.connect(
+                        host=host, port=port, dbname=dbname,
+                        user=user, password=password,
+                        sslmode="require", connect_timeout=30,
+                    )
+                print(f"  ✅  Connected via {_DRIVER}", flush=True)
                 return conn
             except Exception as e:
                 last_err = e
-                print(f"  ⚠️  DB connection attempt {attempt+1} failed: {e}", flush=True)
+                print(f"  ⚠️  DB connection attempt {attempt+1} ({_DRIVER}) failed: {e}", flush=True)
                 if attempt < 2:
                     time.sleep(5)
         raise last_err

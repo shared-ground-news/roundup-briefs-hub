@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install feedparser psycopg2-binary "psycopg[binary]"
+        run: pip install feedparser psycopg2-binary pg8000
 
       - name: Run scraper
         env:
