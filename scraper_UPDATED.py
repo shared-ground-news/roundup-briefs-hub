@@ -94,7 +94,7 @@ FEEDS = {
     "Media Matters":        {"url": "https://www.mediamatters.org/rss/latest",                   "country": "US"},
 
     # ── German: General / Quality News (keyword-filtered) ───────────────────
-    "tagesschau.de":        {"url": "https://www.tagesschau.de/xml/rss2/",                       "country": "DE", "locale": "de"},
+    "tagesschau.de":        {"url": "https://www.tagesschau.de/infoservices/alle-meldungen-100~rss2.xml", "country": "DE", "locale": "de"},
     "Der Spiegel":          {"url": "https://www.spiegel.de/schlagzeilen/tops/index.rss",         "country": "DE", "locale": "de"},
     "Die Zeit":             {"url": "https://www.zeit.de/index.xml",                              "country": "DE", "locale": "de"},
     "Süddeutsche Zeitung":  {"url": "https://rss.sueddeutsche.de/rss/Topthemen",                  "country": "DE", "locale": "de"},
@@ -103,7 +103,6 @@ FEEDS = {
     "Deutschlandfunk":      {"url": "https://www.deutschlandfunk.de/api/podcast/nachrichten.xml", "country": "DE", "locale": "de"},
 
     # ── German: Investigative / Digital Rights (all articles kept) ──────────
-    "CORRECTIV":            {"url": "https://correctiv.org/feed/",                               "country": "DE", "locale": "de"},
     "netzpolitik.org":      {"url": "https://netzpolitik.org/feed/",                             "country": "DE", "locale": "de"},
 
     # ── German: DACH Expansion (keyword-filtered) ───────────────────────────
@@ -111,10 +110,10 @@ FEEDS = {
     "ORF.at":               {"url": "https://rss.orf.at/news.xml",                                "country": "AT", "locale": "de"},
 
     # ── German: LGBTQIA+ Specialist (all articles kept) ─────────────────────
-    "queer.de":             {"url": "https://www.queer.de/feed.php",                             "country": "DE", "locale": "de"},
+    "queer.de":             {"url": "https://www.queer.de/rss/newsticker2.0.komplett.xml",       "country": "DE", "locale": "de"},
 
     # ── German: Feminist Specialist (all articles kept) ─────────────────────
-    "Missy Magazine":       {"url": "https://www.missy-magazine.de/feed/",                       "country": "DE", "locale": "de"},
+    "Missy Magazine":       {"url": "https://missy-magazine.de/feed/",                           "country": "DE", "locale": "de"},
 }
 
 # Sources where ALL articles are kept (no keyword filter needed)
@@ -140,7 +139,6 @@ ALWAYS_INCLUDE_SOURCES = {
 DE_ALWAYS_INCLUDE_SOURCES = {
     "queer.de",           # LGBTQIA+ specialist
     "Missy Magazine",     # feminist specialist
-    "CORRECTIV",          # investigative — high signal-to-noise
     "netzpolitik.org",    # digital rights — all articles structurally relevant
 }
 
