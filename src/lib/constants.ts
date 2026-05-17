@@ -14,6 +14,7 @@ export interface Article {
   published_at?: string;
   is_paywalled?: boolean;
   locale?: string;
+  image_url?: string | null;
 }
 
 export interface Stats {

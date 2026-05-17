@@ -4,11 +4,24 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+
+// Main feed
 import Index from "./pages/Index";
-import MapPage from "./pages/MapPage";
+
+// New design pages
+import GlobalMap from "./pages/GlobalMap";
+import Podcasts from "./pages/Podcasts";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Impressum from "./pages/Impressum";
+import Newsletter from "./pages/Newsletter";
+
+// Auth-required pages (Valeria's)
 import SavedPage from "./pages/SavedPage";
 import ProfilePage from "./pages/ProfilePage";
+
 import NotFound from "./pages/NotFound";
+
 import type { Locale } from "@/lib/constants";
 
 const queryClient = new QueryClient();
@@ -28,16 +41,21 @@ const App = () => (
             <Route path="/de" element={<Index locale={"de" as Locale} />} />
             <Route path="/en" element={<Index locale={"en" as Locale} />} />
 
-            {/* World map */}
-            <Route path="/map" element={<MapPage />} />
+            {/* Static / design pages */}
+            <Route path="/map"        element={<GlobalMap />} />
+            <Route path="/podcasts"   element={<Podcasts />} />
+            <Route path="/about"      element={<About />} />
+            <Route path="/contact"    element={<Contact />} />
+            <Route path="/impressum"  element={<Impressum />} />
+            <Route path="/newsletter" element={<Newsletter />} />
 
-            {/* Saved articles */}
-            <Route path="/saved" element={<Navigate to="/de/saved" replace />} />
-            <Route path="/de/saved" element={<SavedPage locale={"de" as Locale} />} />
-            <Route path="/en/saved" element={<SavedPage locale={"en" as Locale} />} />
+            {/* Saved articles (auth-aware) */}
+            <Route path="/saved"     element={<Navigate to="/de/saved" replace />} />
+            <Route path="/de/saved"  element={<SavedPage locale={"de" as Locale} />} />
+            <Route path="/en/saved"  element={<SavedPage locale={"en" as Locale} />} />
 
             {/* Profile */}
-            <Route path="/profile" element={<Navigate to="/de/profile" replace />} />
+            <Route path="/profile"    element={<Navigate to="/de/profile" replace />} />
             <Route path="/de/profile" element={<ProfilePage locale={"de" as Locale} />} />
             <Route path="/en/profile" element={<ProfilePage locale={"en" as Locale} />} />
 
