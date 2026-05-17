@@ -4,7 +4,7 @@
 Feminist/LGBTQIA+ news aggregator available in English and German (and growing to more locales).
 Built by **Valeria Pinto** (scraping, backend, data) and **Alexandra Brandl** (frontend, design, UX).
 
-Live at: **roundup-briefs-hub.pages.dev** (will move to a custom domain)
+Live at: **sharedgroundnews.pages.dev** (will move to a custom domain)
 GitHub: **https://github.com/shared-ground-news/roundup-briefs-hub**
 
 ---
