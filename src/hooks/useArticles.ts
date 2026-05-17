@@ -193,3 +193,89 @@ export function useArticles(localeOrCountry?: string) {
     clearFilters,
   };
 }
+
+// ─── Country-specific on-demand fetcher (used by GlobalMap) ───────────────────
+//
+// When a user clicks a country on the world map, fetch up to 10 articles
+// for that country from Supabase. Caches the last fetched country to avoid
+// duplicate requests.
+
+export function useCountryArticles() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [lastFetched, setLastFetched] = useState<string | null>(null);
+
+  const fetchForCountry = useCallback(async (country: string) => {
+    if (lastFetched === country) return;
+    setLastFetched(country);
+    setArticles([]);
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .eq("country", country)
+        .order("published_at", { ascending: false })
+        .limit(10);
+      if (error) throw error;
+      setArticles(Array.isArray(data) ? data : []);
+    } catch {
+      setArticles([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [lastFetched]);
+
+  const reset = useCallback(() => {
+    setLastFetched(null);
+    setArticles([]);
+  }, []);
+
+  return { articles, loading, fetchForCountry, reset };
+}
+
+// ─── Podcasts (static for now, can be moved to Supabase later) ────────────────
+
+const STATIC_PODCASTS = [
+  {
+    feed_url: "fast-curious",
+    cover_url: null,
+    title: "FAST & CURIOUS",
+    description: "Karriere & Business Podcast",
+    latest_ep: "Latest episode",
+    duration: "55 min",
+    website_url: "https://fastandcurious.podigee.io/",
+  },
+  {
+    feed_url: "grosse-toechter",
+    cover_url: null,
+    title: "Große Töchter",
+    description: "Feministischer Talk aus Wien",
+    latest_ep: "Latest episode",
+    duration: "75 min",
+    website_url: "https://grossetoechter.simplecast.com/",
+  },
+  {
+    feed_url: "lila-podcast",
+    cover_url: null,
+    title: "Lila Podcast",
+    description: "Feminismus für alle",
+    latest_ep: "Latest episode",
+    duration: "72 min",
+    website_url: "https://lila-podcast.de/",
+  },
+  {
+    feed_url: "diepodcastin",
+    cover_url: null,
+    title: "DiePodcastin",
+    description: "Feministisch, politisch, divers",
+    latest_ep: "Latest episode",
+    duration: "60 min",
+    website_url: "https://diepodcastin.de/",
+  },
+];
+
+export function usePodcasts() {
+  return { podcasts: STATIC_PODCASTS, loading: false };
+}
