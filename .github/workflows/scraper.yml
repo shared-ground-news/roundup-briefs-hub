@@ -1,9 +1,13 @@
 name: Run Scraper
 
+# Runs Valeria's news scraper on a schedule and writes articles to Supabase.
+# Coexists with whatever scraper instance Valeria runs on Render — both write
+# via upsert with UNIQUE constraints, so duplicates are silently ignored.
+
 on:
   schedule:
-    - cron: '0 6,18 * * *'   # 6:00 and 18:00 UTC (= 8:00 and 20:00 Berlin summer time)
-  workflow_dispatch:           # allow manual trigger from GitHub Actions tab
+    - cron: '0 6,18 * * *'   # 06:00 and 18:00 UTC (08:00 and 20:00 Berlin summer time)
+  workflow_dispatch:           # allow manual trigger from the Actions tab
 
 jobs:
   scrape:
@@ -19,10 +23,12 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install feedparser psycopg2-binary pg8000
+        working-directory: scraper
+        run: pip install -r requirements.txt
 
       - name: Run scraper
+        working-directory: scraper
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PGSSLMODE: require
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: python scraper_UPDATED.py
