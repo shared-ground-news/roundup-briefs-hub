@@ -1,7 +1,9 @@
 import { Bookmark, Share2 } from "lucide-react";
+import { useOgImage } from "@/hooks/useOgImage";
 
 interface FeaturedArticleProps {
   image?: string | null;
+  articleUrl?: string | null;
   category: string;
   headline: string;
   summary: string;
@@ -13,6 +15,7 @@ interface FeaturedArticleProps {
 
 const FeaturedArticle = ({
   image,
+  articleUrl,
   category,
   headline,
   summary,
@@ -21,6 +24,9 @@ const FeaturedArticle = ({
   readTime,
   paywalled,
 }: FeaturedArticleProps) => {
+  const ogImage = useOgImage(articleUrl, !!image);
+  const displayImage = image || ogImage;
+
   return (
     <article className="group cursor-pointer">
       <div className="relative overflow-hidden rounded-sm mb-5 bg-muted h-[400px]">
@@ -29,19 +35,15 @@ const FeaturedArticle = ({
             €
           </div>
         )}
-        {image ? (
+        {displayImage ? (
           <img
-            src={image}
+            src={displayImage}
             alt={headline}
             className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-            <span className="select-none text-[hsl(0,0%,58%)] text-sm font-medium tracking-widest">
-              Image loading…
-            </span>
-          </div>
+          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]" />
         )}
       </div>
       <span className="category-tag">{category}</span>

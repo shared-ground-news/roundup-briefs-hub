@@ -1,3 +1,5 @@
+import { useOgImage } from "@/hooks/useOgImage";
+
 interface ArticleTileProps {
   image?: string | null;
   category: string;
@@ -19,6 +21,9 @@ const ArticleTile = ({
   href,
   paywalled,
 }: ArticleTileProps) => {
+  const ogImage = useOgImage(href, !!image);
+  const displayImage = image || ogImage;
+
   const colorClass =
     categoryColor === "orange"
       ? "category-tag--orange"
@@ -35,19 +40,15 @@ const ArticleTile = ({
             €
           </div>
         )}
-        {image ? (
+        {displayImage ? (
           <img
-            src={image}
+            src={displayImage}
             alt={headline}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-            <span className="select-none text-[hsl(0,0%,58%)] text-[11px] font-medium tracking-widest">
-              Image loading…
-            </span>
-          </div>
+          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]" />
         )}
       </div>
       {/* Meta */}

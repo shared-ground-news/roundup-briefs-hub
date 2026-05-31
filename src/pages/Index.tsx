@@ -224,6 +224,7 @@ const Index = ({ locale }: IndexProps) => {
                     <a href={featured.link} target="_blank" rel="noopener noreferrer" className="block">
                       <FeaturedArticle
                         image={featured.image_url}
+                        articleUrl={featured.link}
                         category={getArticleCategory(featured)}
                         headline={featured.title}
                         summary={featured.summary || "Read the full article for more details."}
