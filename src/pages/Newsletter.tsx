@@ -45,10 +45,10 @@ const Newsletter = () => {
       </div>
 
       <main className="container max-w-[1400px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
           {/* Left — benefits */}
-          <div className="col-span-5">
+          <div className="lg:col-span-5">
             <h3 className="headline-lg mb-8">Was dich erwartet</h3>
             <div className="space-y-6">
               {[
@@ -87,7 +87,7 @@ const Newsletter = () => {
           </div>
 
           {/* Right — signup form */}
-          <div className="col-span-7 flex items-start">
+          <div className="lg:col-span-7 flex items-start">
             <div className="w-full border border-border rounded-sm p-10">
               {status === "success" ? (
                 <div className="text-center py-8">

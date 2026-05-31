@@ -53,7 +53,7 @@ const Podcasts = () => {
           Kuratierte Podcasts rund um Feminismus, Frauen und gesellschaftliche Perspektiven.
         </p>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => <PodcastSkeleton key={i} />)
             : podcasts.map((podcast) => (

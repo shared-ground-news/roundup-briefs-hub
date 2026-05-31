@@ -15,35 +15,70 @@ export type { Article, Stats };
 
 // ─── Topic mapping: backend key → 4 German display categories ─────────────────
 // Categories: Politik | Kultur | Wirtschaft | Sport
+//
+// Maps old German keys, new English keys (Valeria's Supabase scraper),
+// and raw category field values ("women", "lgbtqia+").
 const TOPIC_DISPLAY: Record<string, string> = {
+  // Old German topic keys
   "Kultur & Medien":         "Kultur",
   "Sport":                   "Sport",
-  "LGBTQIA+":                "Kultur",   // social/cultural identity
+  "LGBTQIA+":                "Kultur",
   "Lohnluecke & Wirtschaft": "Wirtschaft",
   "Arbeit & Wirtschaft":     "Wirtschaft",
   "Reproduktive Rechte":     "Politik",
   "Gewalt & Sicherheit":     "Politik",
   "Menschenrechte":          "Politik",
-  "Gesundheit & Medizin":    "Politik",  // health policy
+  "Gesundheit & Medizin":    "Politik",
   "Migration & Asyl":        "Politik",
   "Recht & Politik":         "Politik",
   "Politik & Regierung":     "Politik",
+
+  // New English topic keys (Supabase-era scraper)
+  "Culture":                              "Kultur",
+  "Media & Narrative Power":              "Kultur",
+  "Culture, Media & Narrative Power":     "Kultur",
+  "Technology & Digital Power":           "Kultur",
+  "State Power":                          "Politik",
+  "Law & Governance":                     "Politik",
+  "State Power, Law & Governance":        "Politik",
+  "Bodily Autonomy & Reproductive Justice": "Politik",
+  "Violence":                             "Politik",
+  "Safety & Criminal Justice":            "Politik",
+  "Violence, Safety & Criminal Justice":  "Politik",
+  "Migration":                            "Politik",
+  "Borders & Citizenship":               "Politik",
+  "Migration, Borders & Citizenship":    "Politik",
+  "Anti-Rights & Backlash Movements":    "Politik",
+  "Economic & Labour Justice":           "Wirtschaft",
+  "Climate & Environmental Justice":     "Politik",
+
+  // Raw category field values written by the scraper
+  "women":    "Politik",
+  "lgbtqia+": "Kultur",
+  "general":  "Politik",
 };
 
 export function mapTopic(backendTopic: string): string {
   return TOPIC_DISPLAY[backendTopic.trim()] ?? "Politik";
 }
 
-// Sport keywords — catches mis-tagged articles like Paralympics
 const SPORT_TITLE_RE =
   /paralymp|olympia|olympisch|sportler\b|fußball|handball|basketball|tennis\b|volleyball|schwimm|leichtathletik|turnen\b|radsport|\bski\b|skifahren|snowboard|wintersport|formel\s*1|motorsport|boxen\b|ringen\b|triathlon|marathon\b|\bgolf\b|segeln\b|athleti/i;
 
 export function getArticleCategory(article: Article): string {
-  // Valeria's articles may already have a `category` field — prefer it if set
-  if (article.category && article.category !== "general") return article.category;
-  if (!article.topics) return "Politik";
-  const topics = article.topics.split(",").map((t) => t.trim());
+  // Map the raw category field ("women", "lgbtqia+", etc.)
+  if (article.category) {
+    const fromCategory = TOPIC_DISPLAY[article.category.toLowerCase().trim()];
+    if (fromCategory) return fromCategory;
+  }
 
+  // Fall back to topics field
+  if (!article.topics) {
+    if (SPORT_TITLE_RE.test(article.title + " " + (article.tags ?? ""))) return "Sport";
+    return "Politik";
+  }
+
+  const topics = article.topics.split(",").map((t) => t.trim());
   if (topics.some((t) => TOPIC_DISPLAY[t] === "Sport")) return "Sport";
   if (SPORT_TITLE_RE.test(article.title + " " + (article.tags ?? ""))) return "Sport";
   return mapTopic(topics[0]);

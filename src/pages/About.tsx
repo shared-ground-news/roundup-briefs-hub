@@ -38,8 +38,8 @@ const About = () => {
       <main className="container max-w-[1400px] mx-auto px-6 py-8">
         <h2 className="headline-xl mb-6">About Shared Ground</h2>
 
-        <div className="grid grid-cols-12 gap-12">
-          <div className="col-span-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          <div className="lg:col-span-8">
             <p className="body-lg text-muted-foreground mb-6">
               Shared Ground ist ein feministischer News-Aggregator, der Artikel aus
               deutschsprachigen Medien kuratiert und nach Relevanz für Geschlechtergleichstellung,
@@ -49,7 +49,7 @@ const About = () => {
             <div className="editorial-divider-thin my-8" />
 
             <h3 className="headline-lg mb-4">So funktioniert die Kuratierung</h3>
-            <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               {[
                 {
                   icon: Rss,
@@ -115,7 +115,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="col-span-4">
+          <div className="lg:col-span-4">
             <div className="bg-foreground text-primary-foreground p-6 rounded-sm mb-6">
               <h4 className="font-headline text-xl font-bold mb-3">Unsere Mission</h4>
               <p className="text-sm opacity-80 leading-relaxed">
