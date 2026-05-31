@@ -186,10 +186,10 @@ const Index = ({ locale }: IndexProps) => {
           <>
             {activeTopic === "Alle" ? (
               /* ═══ "ALLE" TAB — 3-column editorial layout ═══ */
-              <div className="grid grid-cols-12 gap-8">
+              <div className="grid grid-cols-12 gap-6 md:gap-8">
 
                 {/* ── LEFT COLUMN ────────────────────────────── */}
-                <div className="col-span-3">
+                <div className="col-span-12 md:col-span-3 order-2 md:order-1">
                   <div className="editorial-divider mb-3" />
                   <h3 className="font-headline text-lg font-bold mb-2 uppercase tracking-wide">
                     Aktuell
@@ -219,7 +219,7 @@ const Index = ({ locale }: IndexProps) => {
                 </div>
 
                 {/* ── CENTER COLUMN — Featured ──────────────── */}
-                <div className="col-span-6 border-l border-r border-border px-8">
+                <div className="col-span-12 md:col-span-6 md:border-l md:border-r border-border md:px-8 order-1 md:order-2">
                   {featured ? (
                     <a href={featured.link} target="_blank" rel="noopener noreferrer" className="block">
                       <FeaturedArticle
@@ -241,7 +241,7 @@ const Index = ({ locale }: IndexProps) => {
                 </div>
 
                 {/* ── RIGHT COLUMN — Podcasts ────────────────── */}
-                <div className="col-span-3">
+                <div className="col-span-12 md:col-span-3 order-3">
                   <div className="editorial-divider mb-3" />
                   <h3 className="font-headline text-lg font-bold mb-4 uppercase tracking-wide">
                     Podcasts
@@ -264,8 +264,8 @@ const Index = ({ locale }: IndexProps) => {
             ) : (
               /* ═══ CATEGORY TABS — WIRED-style hero + 2 stacked ═══ */
               featured ? (
-                <div className="grid grid-cols-12 gap-8">
-                  <div className="col-span-8">
+                <div className="grid grid-cols-12 gap-6 md:gap-8">
+                  <div className="col-span-12 md:col-span-8">
                     <a href={featured.link} target="_blank" rel="noopener noreferrer" className="block group">
                       <div className="relative w-full aspect-[16/9] overflow-hidden rounded-sm bg-muted mb-4">
                         {isPaywalled(featured) && (
@@ -303,7 +303,7 @@ const Index = ({ locale }: IndexProps) => {
                     </a>
                   </div>
 
-                  <div className="col-span-4 flex flex-col gap-6">
+                  <div className="col-span-12 md:col-span-4 flex flex-col gap-6">
                     {[sideTwo, sideThree].map((article) =>
                       article ? (
                         <a key={article.id} href={article.link} target="_blank" rel="noopener noreferrer" className="block group">
@@ -348,7 +348,7 @@ const Index = ({ locale }: IndexProps) => {
             {tileArticles.length > 0 && (
               <div className="mt-8">
                 <div className="border-t border-border mb-6" />
-                <div className="grid grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {visibleTiles.map((article) => (
                     <ArticleTile
                       key={article.id}

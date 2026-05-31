@@ -14,8 +14,8 @@ const TopicFilterBar = ({ topics, active, onSelect }: TopicFilterBarProps) => {
   };
 
   return (
-    <div className="pt-2 pb-0 mb-4">
-      <div className="flex items-center gap-0">
+    <div className="pt-2 pb-0 mb-4 overflow-x-auto scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
+      <div className="flex items-center gap-0 flex-nowrap min-w-max md:min-w-0 md:flex-wrap">
         {topics.map((topic, i) => (
           <span key={topic} className="flex items-center">
             {i > 0 && <span className="mx-2 text-[#ccc] text-[11px]">·</span>}
