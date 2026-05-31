@@ -9,7 +9,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 
 // New design pages
-import GlobalMap from "./pages/GlobalMap";
 import Podcasts from "./pages/Podcasts";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -42,7 +41,6 @@ const App = () => (
             <Route path="/en" element={<Index locale={"en" as Locale} />} />
 
             {/* Static / design pages */}
-            <Route path="/map"        element={<GlobalMap />} />
             <Route path="/podcasts"   element={<Podcasts />} />
             <Route path="/about"      element={<About />} />
             <Route path="/contact"    element={<Contact />} />

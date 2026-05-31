@@ -68,9 +68,6 @@ const Masthead = ({
 
           {/* Nav links on desktop */}
           <div className="hidden sm:flex items-center gap-3 text-xs text-muted-foreground font-sans">
-            <Link to="/map" className="hover:text-foreground transition-colors">
-              map
-            </Link>
             <button
               onClick={onNewsletterClick}
               className="hover:text-foreground transition-colors"
