@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Headphones, ExternalLink } from "lucide-react";
+import { useOgImage } from "@/hooks/useOgImage";
 
 interface PodcastCardProps {
   cover?: string | null;
@@ -32,11 +33,14 @@ const PodcastCoverSmall = ({ src, title }: { src?: string | null; title: string 
 };
 
 const PodcastCard = ({ cover, title, duration, href, className }: PodcastCardProps) => {
+  const ogImage = useOgImage(href, !!cover);
+  const displayCover = cover || ogImage;
+
   const card = (
     <article className="group flex gap-3 p-3 bg-card rounded-sm border border-border hover:border-foreground/20 transition-colors cursor-pointer">
       {/* Cover — larger */}
       <div className="w-24 h-24 flex-shrink-0 rounded-sm overflow-hidden bg-muted">
-        <PodcastCoverSmall src={cover} title={title} />
+        <PodcastCoverSmall src={displayCover} title={title} />
       </div>
 
       {/* Text */}
