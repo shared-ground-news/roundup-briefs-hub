@@ -65,7 +65,7 @@ const PODCASTS = [
 // ─── Branded loading screen ──────────────────────────────────────────────────
 const LoadingScreen = () => (
   <div className="flex flex-col items-center justify-center min-h-[65vh] gap-8">
-    <div className="relative flex items-center justify-center w-20 h-20">
+    <div className="relative w-20 h-20">
       <div className="absolute inset-0 rounded-full border border-foreground/8 animate-ping [animation-duration:2s]" />
       <div className="absolute inset-2 rounded-full border border-foreground/12 animate-ping [animation-duration:2s] [animation-delay:0.3s]" />
       <span className="relative font-headline text-3xl font-black tracking-tight select-none">SG</span>
@@ -98,6 +98,19 @@ const Index = ({ locale }: IndexProps) => {
   }, [locale, setLocale]);
 
   const { articles, loading } = useArticles(locale);
+
+  // Only show tabs that actually have articles
+  const availableTopics = useMemo(() => {
+    const cats = new Set(articles.map((a) => getArticleCategory(a)));
+    return ALL_TOPICS.filter((t) => t === "Alle" || cats.has(t));
+  }, [articles]);
+
+  // Reset active topic if it becomes unavailable
+  useEffect(() => {
+    if (activeTopic !== "Alle" && !availableTopics.includes(activeTopic)) {
+      setActiveTopic("Alle");
+    }
+  }, [availableTopics, activeTopic]);
 
   // Filter articles by active topic
   const filtered = useMemo(() => {
@@ -175,7 +188,7 @@ const Index = ({ locale }: IndexProps) => {
 
       <main className="container max-w-[1400px] mx-auto px-6 pt-2 pb-8">
         <TopicFilterBar
-          topics={ALL_TOPICS}
+          topics={availableTopics}
           active={activeTopic}
           onSelect={setActiveTopic}
         />
@@ -280,8 +293,8 @@ const Index = ({ locale }: IndexProps) => {
                             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                           />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-                            <span className="select-none text-[hsl(0,0%,58%)] text-sm font-medium tracking-widest">Image loading…</span>
+                          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]">
+                            
                           </div>
                         )}
                       </div>
@@ -317,8 +330,8 @@ const Index = ({ locale }: IndexProps) => {
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-                                <span className="select-none text-[hsl(0,0%,58%)] text-[11px] font-medium tracking-widest">Image loading…</span>
+                              <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]">
+                                
                               </div>
                             )}
                           </div>
