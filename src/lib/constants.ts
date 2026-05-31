@@ -24,7 +24,20 @@ export interface Stats {
   last_scraped: string;
 }
 
+// ── Active display topics (short names for the filter bar) ───────────────────
 export const TOPICS = [
+  { label: "Alle",              emoji: "✨" },
+  { label: "Bodily Autonomy",   emoji: "🩺" },
+  { label: "Narrative Power",   emoji: "🎭" },
+  { label: "Law & Governance",  emoji: "🏛️" },
+  { label: "Criminal Justice",  emoji: "🛡️" },
+  { label: "Citizenship",       emoji: "🌍" },
+] as const;
+
+// ── Legacy topic names (Valeria's original taxonomy — kept for reference) ────
+// These were the fuller labels used in the OnboardingModal and useFollowedTopics.
+// Preserved here in case we want to restore them or use them elsewhere.
+export const TOPICS_LEGACY = [
   { label: "All Topics",             emoji: "✨" },
   { label: "Reproductive Rights",    emoji: "🩺" },
   { label: "Gender Pay Gap",         emoji: "💰" },
@@ -41,6 +54,13 @@ export const TOPICS = [
 ] as const;
 
 export const TOPIC_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  // Active categories
+  "Bodily Autonomy":   { bg: "#FFE5EF", text: "#C8003C", border: "#F0ADC8" },
+  "Narrative Power":   { bg: "#FFF8E1", text: "#9D4E00", border: "#FFD54F" },
+  "Law & Governance":  { bg: "#E3F2FD", text: "#0D47A1", border: "#90CAF9" },
+  "Criminal Justice":  { bg: "#FFEBEE", text: "#C62828", border: "#EF9A9A" },
+  "Citizenship":       { bg: "#E0F7FA", text: "#006064", border: "#80DEEA" },
+  // Legacy (kept for OnboardingModal etc.)
   "Reproductive Rights":    { bg: "#FFE5EF", text: "#C8003C", border: "#F0ADC8" },
   "Gender Pay Gap":         { bg: "#FFF3E0", text: "#E65100", border: "#FFCC80" },
   "LGBTQIA+":               { bg: "#EDE7F6", text: "#4A1FA8", border: "#B39DDB" },
