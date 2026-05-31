@@ -1,4 +1,5 @@
 import { Bookmark, Play } from "lucide-react";
+import { useOgImage } from "@/hooks/useOgImage";
 
 interface ArticleCardSmallProps {
   thumbnail?: string | null;
@@ -31,7 +32,9 @@ const ArticleCardSmall = ({
   variant = "default",
   paywalled = false,
 }: ArticleCardSmallProps) => {
-  const hasImage = !!thumbnail;
+  const ogImage = useOgImage(href, !!thumbnail);
+  const displayImage = thumbnail || ogImage;
+  const hasImage = !!displayImage;
 
   const colorClass =
     categoryColor === "orange"
@@ -46,17 +49,13 @@ const ArticleCardSmall = ({
         <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden bg-muted">
           {hasImage ? (
             <img
-              src={thumbnail!}
+              src={displayImage!}
               alt={headline}
               className="w-full h-full object-cover"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-              <span className="select-none text-[hsl(0,0%,58%)] text-[9px] font-medium tracking-wider text-center leading-tight px-1">
-                Image<br />loading…
-              </span>
-            </div>
+            <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]" />
           )}
           {isVideo && (
             <div className="absolute inset-0 flex items-center justify-center bg-foreground/30">
@@ -84,17 +83,13 @@ const ArticleCardSmall = ({
         <div className="relative w-28 h-20 flex-shrink-0 overflow-hidden rounded-sm bg-muted">
           {hasImage ? (
             <img
-              src={thumbnail!}
+              src={displayImage!}
               alt={headline}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)] flex items-center justify-center">
-              <span className="select-none text-[hsl(0,0%,58%)] text-[9px] font-medium tracking-wider text-center leading-tight px-1">
-                Image<br />loading…
-              </span>
-            </div>
+            <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]" />
           )}
           {isVideo && (
             <div className="absolute inset-0 flex items-center justify-center bg-foreground/30">
