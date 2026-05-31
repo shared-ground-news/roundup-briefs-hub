@@ -68,22 +68,22 @@ const SPORT_TITLE_RE =
   /paralymp|olympia|olympisch|sportler\b|fußball|handball|basketball|tennis\b|volleyball|schwimm|leichtathletik|turnen\b|radsport|\bski\b|skifahren|snowboard|wintersport|formel\s*1|motorsport|boxen\b|ringen\b|triathlon|marathon\b|\bgolf\b|segeln\b|athleti/i;
 
 export function getArticleCategory(article: Article): string {
-  // Map the raw category field ("women", "lgbtqia+", etc.)
+  // Topics field is most specific — check it first
+  if (article.topics) {
+    const topics = article.topics.split(",").map((t) => t.trim());
+    for (const t of topics) {
+      const mapped = TOPIC_DISPLAY[t];
+      if (mapped) return mapped;
+    }
+  }
+
+  // Fall back to raw category ("women", "lgbtqia+", etc.)
   if (article.category) {
-    const fromCategory = TOPIC_DISPLAY[article.category.toLowerCase().trim()];
-    if (fromCategory) return fromCategory;
+    const mapped = TOPIC_DISPLAY[article.category.toLowerCase().trim()];
+    if (mapped) return mapped;
   }
 
-  // Fall back to topics field
-  if (!article.topics) {
-    if (SPORT_TITLE_RE.test(article.title + " " + (article.tags ?? ""))) return "Sport";
-    return "Politik";
-  }
-
-  const topics = article.topics.split(",").map((t) => t.trim());
-  if (topics.some((t) => TOPIC_DISPLAY[t] === "Sport")) return "Sport";
-  if (SPORT_TITLE_RE.test(article.title + " " + (article.tags ?? ""))) return "Sport";
-  return mapTopic(topics[0]);
+  return "Law & Governance";
 }
 
 export function getCategoryColor(
