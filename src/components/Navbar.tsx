@@ -33,7 +33,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full border-b border-border bg-background sticky top-0 z-50">
+    <>
+    <header className="w-full border-b border-border bg-background sticky top-0 z-50 relative">
       {/* Top bar with date */}
       <div className="border-b border-border">
         <div className="container max-w-[1400px] mx-auto px-4 md:px-6 py-2 flex justify-between items-center">
@@ -108,9 +109,9 @@ const Navbar = () => {
         </ul>
       </nav>
 
-      {/* Navigation — mobile dropdown */}
+      {/* Navigation — mobile overlay (absolute, floats over page content) */}
       {menuOpen && (
-        <nav className="md:hidden border-t border-border bg-background">
+        <nav className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-lg z-50">
           <ul className="flex flex-col divide-y divide-border">
             {navItems.map((item) => (
               <li key={item.path}>
@@ -131,6 +132,14 @@ const Navbar = () => {
         </nav>
       )}
     </header>
+    {/* Backdrop — closes menu on tap outside */}
+    {menuOpen && (
+      <div
+        className="fixed inset-0 z-40 md:hidden"
+        onClick={() => setMenuOpen(false)}
+      />
+    )}
+    </>
   );
 };
 

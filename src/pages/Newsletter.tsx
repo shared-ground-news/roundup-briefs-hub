@@ -27,11 +27,11 @@ const Newsletter = () => {
 
       {/* Hero */}
       <div className="border-b border-border bg-gradient-to-br from-[#4c1d95] via-[#6d28d9] to-[#7c3aed]">
-        <div className="container max-w-[1400px] mx-auto px-6 py-20 text-center">
+        <div className="container max-w-[1400px] mx-auto px-4 md:px-6 py-10 md:py-20 text-center">
           <p className="text-xs uppercase tracking-[0.25em] text-white/50 mb-4">
             Jeden Sonntag
           </p>
-          <h2 className="font-headline text-5xl md:text-6xl font-black tracking-tight mb-5 leading-tight text-white">
+          <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-5 leading-tight text-white">
             Die Woche im Rückblick.
             <br />
             <span className="text-white/60">Direkt in dein Postfach.</span>
@@ -44,7 +44,7 @@ const Newsletter = () => {
         </div>
       </div>
 
-      <main className="container max-w-[1400px] mx-auto px-6 py-16">
+      <main className="container max-w-[1400px] mx-auto px-4 md:px-6 py-10 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
           {/* Left — benefits */}
@@ -88,7 +88,7 @@ const Newsletter = () => {
 
           {/* Right — signup form */}
           <div className="lg:col-span-7 flex items-start">
-            <div className="w-full border border-border rounded-sm p-10">
+            <div className="w-full border border-border rounded-sm p-6 md:p-10">
               {status === "success" ? (
                 <div className="text-center py-8">
                   <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center mx-auto mb-5">

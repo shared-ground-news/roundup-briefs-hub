@@ -1,5 +1,3 @@
-import { useOgImage } from "@/hooks/useOgImage";
-
 interface ArticleTileProps {
   image?: string | null;
   category: string;
@@ -21,8 +19,7 @@ const ArticleTile = ({
   href,
   paywalled,
 }: ArticleTileProps) => {
-  const ogImage = useOgImage(href, !!image);
-  const displayImage = image || ogImage;
+  const displayImage = image;
 
   const colorClass =
     categoryColor === "orange"

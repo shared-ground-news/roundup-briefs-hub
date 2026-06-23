@@ -97,7 +97,7 @@
 @layer components {
   .headline-xl {
     font-family: var(--font-headline);
-    @apply text-5xl md:text-6xl font-black leading-[1.05] tracking-tight;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight;
   }
 
   .headline-lg {

@@ -29,7 +29,7 @@ const FeaturedArticle = ({
 
   return (
     <article className="group cursor-pointer">
-      <div className="relative overflow-hidden rounded-sm mb-5 bg-muted h-[400px]">
+      <div className="relative overflow-hidden rounded-sm mb-5 bg-muted h-[220px] sm:h-[300px] md:h-[400px]">
         {paywalled && (
           <div className="absolute top-3 right-3 z-10 bg-foreground/75 text-background text-[10px] font-semibold px-1.5 py-0.5 rounded-sm backdrop-blur-sm select-none">
             €

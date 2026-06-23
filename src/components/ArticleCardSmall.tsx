@@ -1,5 +1,4 @@
 import { Bookmark, Play } from "lucide-react";
-import { useOgImage } from "@/hooks/useOgImage";
 
 interface ArticleCardSmallProps {
   thumbnail?: string | null;
@@ -32,9 +31,7 @@ const ArticleCardSmall = ({
   variant = "default",
   paywalled = false,
 }: ArticleCardSmallProps) => {
-  const ogImage = useOgImage(href, !!thumbnail);
-  const displayImage = thumbnail || ogImage;
-  const hasImage = !!displayImage;
+  const hasImage = !!thumbnail;
 
   const colorClass =
     categoryColor === "orange"
@@ -49,7 +46,7 @@ const ArticleCardSmall = ({
         <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden bg-muted">
           {hasImage ? (
             <img
-              src={displayImage!}
+              src={thumbnail!}
               alt={headline}
               className="w-full h-full object-cover"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
@@ -83,7 +80,7 @@ const ArticleCardSmall = ({
         <div className="relative w-28 h-20 flex-shrink-0 overflow-hidden rounded-sm bg-muted">
           {hasImage ? (
             <img
-              src={displayImage!}
+              src={thumbnail!}
               alt={headline}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}

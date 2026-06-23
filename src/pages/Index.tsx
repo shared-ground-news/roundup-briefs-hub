@@ -186,7 +186,7 @@ const Index = ({ locale }: IndexProps) => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <main className="container max-w-[1400px] mx-auto px-6 pt-2 pb-8">
+      <main className="container max-w-[1400px] mx-auto px-4 sm:px-6 pt-2 pb-8">
         <TopicFilterBar
           topics={availableTopics}
           active={activeTopic}
@@ -199,7 +199,7 @@ const Index = ({ locale }: IndexProps) => {
           <>
             {activeTopic === "Alle" ? (
               /* ═══ "ALLE" TAB — 3-column editorial layout ═══ */
-              <div className="grid grid-cols-12 gap-6 md:gap-8">
+              <div className="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-8">
 
                 {/* ── LEFT COLUMN ────────────────────────────── */}
                 <div className="col-span-12 md:col-span-3 order-2 md:order-1">
@@ -232,7 +232,7 @@ const Index = ({ locale }: IndexProps) => {
                 </div>
 
                 {/* ── CENTER COLUMN — Featured ──────────────── */}
-                <div className="col-span-12 md:col-span-6 md:border-l md:border-r border-border md:px-8 order-1 md:order-2">
+                <div className="col-span-12 md:col-span-6 md:border-l md:border-r md:border-border md:px-8 order-1 md:order-2">
                   {featured ? (
                     <a href={featured.link} target="_blank" rel="noopener noreferrer" className="block">
                       <FeaturedArticle

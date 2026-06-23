@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="border-t border-border/50 mt-16">
-    <div className="container max-w-[1400px] mx-auto px-6 h-12 flex items-center justify-between">
+    <div className="container max-w-[1400px] mx-auto px-4 md:px-6 min-h-[3rem] py-3 flex flex-wrap items-center justify-between gap-2">
       <span className="text-[11px] text-[#999]">
         © 2026 Shared Ground
         <span className="mx-1.5 text-[#ccc]">·</span>

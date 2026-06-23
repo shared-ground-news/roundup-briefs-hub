@@ -11,6 +11,7 @@ import sqlite3
 import hashlib
 import re
 import os
+import urllib.request
 from datetime import datetime, timezone, timedelta
 
 # ── Supabase (primary — used when SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY set) ─
@@ -861,6 +862,27 @@ def extract_published_at(entry) -> str:
     return ""
 
 
+def fetch_og_image(url: str, timeout: int = 5) -> str | None:
+    """Fetch og:image meta tag from the article HTML. Reads only the first 50 KB."""
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "Mozilla/5.0 (compatible; SharedGroundBot/1.0)",
+                "Accept": "text/html",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            html = resp.read(50_000).decode("utf-8", errors="ignore")
+        match = (
+            re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', html, re.IGNORECASE)
+            or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', html, re.IGNORECASE)
+        )
+        return match.group(1) if match else None
+    except Exception:
+        return None
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 #  PAYWALL DETECTION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1029,6 +1051,24 @@ def scrape_all_feeds():
                 is_paywalled = detect_paywall(entry, source_name, locale)
                 scraped_at   = datetime.now(timezone.utc).isoformat()
 
+                # Image URL — 1) RSS media fields, 2) og:image fallback
+                image_url = None
+                try:
+                    media = getattr(entry, "media_content", None) or getattr(entry, "media_thumbnail", None)
+                    if media and isinstance(media, list) and media[0].get("url"):
+                        image_url = media[0]["url"]
+                    elif getattr(entry, "enclosures", None):
+                        for enc in entry.enclosures:
+                            if enc.get("type", "").startswith("image/"):
+                                image_url = enc.get("href") or enc.get("url")
+                                break
+                except Exception:
+                    pass
+
+                # Fallback: fetch og:image from article HTML (skip paywalled — likely blocked)
+                if not image_url and link and not is_paywalled:
+                    image_url = fetch_og_image(link)
+
                 if USE_SUPABASE:
                     batch_rows.append({
                         "url_hash":    hash_id,
@@ -1044,6 +1084,7 @@ def scrape_all_feeds():
                         "published_at": published_at if published_at else None,
                         "is_paywalled": is_paywalled,
                         "locale":      locale,
+                        "image_url":   image_url,
                     })
                 else:
                     try:
