@@ -1,5 +1,6 @@
 import { Bookmark, Share2 } from "lucide-react";
 import { useOgImage } from "@/hooks/useOgImage";
+import TimedImage from "@/components/TimedImage";
 
 interface FeaturedArticleProps {
   image?: string | null;
@@ -35,16 +36,11 @@ const FeaturedArticle = ({
             €
           </div>
         )}
-        {displayImage ? (
-          <img
-            src={displayImage}
-            alt={headline}
-            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]" />
-        )}
+        <TimedImage
+          src={displayImage}
+          alt={headline}
+          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+        />
       </div>
       <span className="category-tag">{category}</span>
       <h2 className="headline-xl mt-2 group-hover:text-accent-blue transition-colors">

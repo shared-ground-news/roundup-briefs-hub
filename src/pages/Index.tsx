@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import FeaturedArticle from "@/components/FeaturedArticle";
 import ArticleCardSmall from "@/components/ArticleCardSmall";
 import ArticleTile from "@/components/ArticleTile";
+import TimedImage from "@/components/TimedImage";
 import PodcastCard from "@/components/PodcastCard";
 import TopicFilterBar from "@/components/TopicFilterBar";
 import { useArticles } from "@/hooks/useArticles";
@@ -285,18 +286,11 @@ const Index = ({ locale }: IndexProps) => {
                         {isPaywalled(featured) && (
                           <div className="absolute top-3 right-3 z-10 bg-foreground/75 text-background text-[10px] font-semibold px-1.5 py-0.5 rounded-sm backdrop-blur-sm select-none">€</div>
                         )}
-                        {featured.image_url ? (
-                          <img
-                            src={featured.image_url}
-                            alt={featured.title}
-                            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]">
-                            
-                          </div>
-                        )}
+                        <TimedImage
+                          src={featured.image_url}
+                          alt={featured.title}
+                          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                        />
                       </div>
                       <span className={`category-tag ${getCategoryColor(getArticleCategory(featured)) === "orange" ? "category-tag--orange" : getCategoryColor(getArticleCategory(featured)) === "magenta" ? "category-tag--magenta" : ""}`}>
                         {getArticleCategory(featured)}
@@ -325,17 +319,11 @@ const Index = ({ locale }: IndexProps) => {
                             {isPaywalled(article) && (
                               <div className="absolute top-2 right-2 z-10 bg-foreground/75 text-background text-[9px] font-semibold px-1.5 py-0.5 rounded-sm backdrop-blur-sm select-none leading-none">€</div>
                             )}
-                            {article.image_url ? (
-                              <img src={article.image_url} alt={article.title}
-                                loading="lazy"
-                                decoding="async"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-[hsl(25,60%,88%)] via-[hsl(0,0%,93%)] to-[hsl(217,40%,88%)]">
-                                
-                              </div>
-                            )}
+                            <TimedImage
+                              src={article.image_url}
+                              alt={article.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
                           </div>
                           <span className={`category-tag text-[10px] ${getCategoryColor(getArticleCategory(article)) === "orange" ? "category-tag--orange" : getCategoryColor(getArticleCategory(article)) === "magenta" ? "category-tag--magenta" : ""}`}>
                             {getArticleCategory(article)}
