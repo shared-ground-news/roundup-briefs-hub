@@ -117,7 +117,7 @@ const Navbar = () => {
                 <Link
                   to={item.path}
                   onClick={() => setMenuOpen(false)}
-                  className={`block px-6 py-3.5 text-sm font-medium uppercase tracking-widest transition-colors ${
+                  className={`block px-6 py-4 text-sm font-medium uppercase tracking-widest transition-colors ${
                     location.pathname === item.path
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
