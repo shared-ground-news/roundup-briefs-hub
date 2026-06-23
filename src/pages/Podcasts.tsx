@@ -98,7 +98,7 @@ const Podcasts = () => {
                         href={podcast.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 flex items-center justify-center gap-2 bg-foreground text-primary-foreground rounded-sm py-2.5 px-4 text-sm font-semibold hover:opacity-90 transition-opacity"
+                        className="mt-4 flex items-center justify-center gap-2 bg-foreground text-primary-foreground rounded-sm py-3 px-4 text-sm font-semibold hover:opacity-90 transition-opacity"
                       >
                         <ExternalLink size={14} />
                         Podcast öffnen
