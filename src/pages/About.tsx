@@ -35,7 +35,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="container max-w-[1400px] mx-auto px-6 py-8">
+      <main className="container max-w-[1400px] mx-auto px-4 md:px-6 py-8">
         <h2 className="headline-xl mb-6">About Shared Ground</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
