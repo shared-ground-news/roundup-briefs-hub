@@ -38,7 +38,7 @@ export default function BookmarkButton({
       aria-label={saved ? "Remove from saved" : "Save article"}
       title={saved ? "Remove from saved" : "Save article"}
       className={cn(
-        "flex-shrink-0 p-1.5 rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "flex-shrink-0 p-2.5 rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         saved
           ? "text-primary"
           : "text-muted-foreground/40 hover:text-muted-foreground",
