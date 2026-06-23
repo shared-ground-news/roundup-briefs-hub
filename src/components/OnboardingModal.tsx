@@ -83,7 +83,7 @@ export default function OnboardingModal({
                     key={slug}
                     type="button"
                     onClick={() => toggleSlug(slug)}
-                    className={`px-2.5 py-1 rounded-sm text-xs font-medium transition-colors select-none ${
+                    className={`px-3 py-2 rounded-sm text-xs font-medium transition-colors select-none ${
                       active
                         ? "bg-chip-active text-chip-active-foreground"
                         : "bg-secondary text-secondary-foreground hover:bg-border"
