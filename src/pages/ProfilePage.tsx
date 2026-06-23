@@ -182,7 +182,7 @@ export default function ProfilePage({ locale }: ProfilePageProps) {
                     key={opt.value}
                     type="button"
                     onClick={() => setNlLocale(opt.value)}
-                    className={`flex-1 px-2 py-1.5 text-xs font-medium transition-colors whitespace-nowrap select-none ${
+                    className={`flex-1 px-2 py-3 text-xs font-medium transition-colors whitespace-nowrap select-none ${
                       i > 0 ? "border-l border-border" : ""
                     } ${
                       nlLocale === opt.value
