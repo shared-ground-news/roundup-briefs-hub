@@ -6,7 +6,6 @@ const Contact = () => (
   <div className="min-h-screen bg-background">
     <Navbar />
     <main className="container max-w-[1400px] mx-auto px-6 py-8">
-      <div className="editorial-divider mb-4" />
       <h2 className="headline-xl mb-10">Kontakt</h2>
 
       <div className="max-w-md">
