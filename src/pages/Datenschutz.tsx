@@ -15,6 +15,7 @@ const Datenschutz = () => (
             Verantwortlich für die Datenverarbeitung auf dieser Website im Sinne
             der DSGVO sind:<br />
             Valeria Pinto &amp; Alexandra Brandl<br />
+            Weinbergsweg<br />
             10119 Berlin<br />
             E-Mail:{" "}
             <a href="mailto:sharedgroundnews@gmail.com" className="underline underline-offset-2">
