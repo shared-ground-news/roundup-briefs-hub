@@ -37,7 +37,7 @@ jobs:
               app_id: "cdbb5e39-5291-4e60-b922-a3f6cb02e4f5",
               included_segments: ["All"],
               headings: { en: $title, de: $title },
-              contents: { en: " ", de: " " },
+              contents: { en: "Jetzt lesen →", de: "Jetzt lesen →" },
               web_url: "https://sharedgroundnews.pages.dev/de"
             }')
 
