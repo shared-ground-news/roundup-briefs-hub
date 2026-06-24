@@ -54,6 +54,12 @@ const Navbar = () => {
     return () => ro.disconnect();
   }, []);
 
+  // ── Lock body scroll when drawer is open ────────────────────────────────────
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   // ── Close mail popover on outside click ─────────────────────────────────────
   useEffect(() => {
     const handler = (e: MouseEvent) => {
