@@ -191,6 +191,13 @@ const Index = ({ locale }: IndexProps) => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
+      {/* Site title — scrolls away naturally, no sticky, no JS */}
+      <div className="text-center py-4 md:py-5 border-b border-border bg-background">
+        <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tight text-foreground">
+          Shared Ground
+        </h1>
+      </div>
+
       <main className="container max-w-[1400px] mx-auto px-4 sm:px-6 pt-2 pb-8">
         <TopicFilterBar
           topics={availableTopics}

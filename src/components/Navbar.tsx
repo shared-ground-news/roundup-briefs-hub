@@ -123,18 +123,9 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* ── LOGO — not sticky, scrolls away naturally ── */}
-      <div className="text-center py-3 md:py-4 border-b border-border bg-background">
-        <Link to="/" className="inline-block">
-          <h1 className="font-headline text-2xl md:text-4xl font-black tracking-tight text-foreground">
-            Shared Ground
-          </h1>
-        </Link>
-      </div>
-
       {/* ── MOBILE NAV overlay ── */}
       {menuOpen && (
-        <nav className="fixed top-[33px] left-0 right-0 bg-background border-b border-border shadow-lg z-40 md:hidden">
+        <nav className="fixed top-[37px] left-0 right-0 bg-background border-b border-border shadow-lg z-40 md:hidden">
           <ul className="flex flex-col divide-y divide-border">
             {navItems.map((item) => (
               <li key={item.path}>
