@@ -77,7 +77,7 @@ const PODCASTS = [
 // ─── Branded loading screen ──────────────────────────────────────────────────
 const LoadingScreen = () => (
   <div className="flex flex-col items-center justify-center min-h-[65vh] gap-8">
-    <div className="relative w-20 h-20">
+    <div className="relative w-20 h-20 flex items-center justify-center">
       <div className="absolute inset-0 rounded-full border border-foreground/8 animate-ping [animation-duration:2s]" />
       <div className="absolute inset-2 rounded-full border border-foreground/12 animate-ping [animation-duration:2s] [animation-delay:0.3s]" />
       <span className="relative font-headline text-3xl font-black tracking-tight select-none">SG</span>
