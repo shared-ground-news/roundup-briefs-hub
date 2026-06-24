@@ -257,13 +257,13 @@ const STATIC_PODCASTS = [
     website_url: "https://grossetoechter.simplecast.com/",
   },
   {
-    feed_url: "feministisch-unterwegs",
-    cover_url: null,
-    title: "Feministisch Unterwegs",
-    description: "Amnesty International im Gespräch über Frauenrechte und Menschenrechte weltweit.",
+    feed_url: "feuer-und-brot",
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/64/72/9b/64729b20-c8f8-a88a-65e1-e420acda03e6/mza_3277642361547724290.jpg/600x600bb.jpg",
+    title: "Feuer & Brot",
+    description: "Alice Hasters und Maximiliane Haecke über Feminismus, Popkultur und Gesellschaft.",
     latest_ep: null,
     duration: null,
-    website_url: "https://www.amnesty.de/podcast",
+    website_url: "https://podcasts.apple.com/de/podcast/feuer-brot/id1546868381",
   },
   {
     feed_url: "queergestreift",
@@ -284,13 +284,13 @@ const STATIC_PODCASTS = [
     website_url: "https://diepodcastin.de/",
   },
   {
-    feed_url: "was-ihr-nicht-seht",
-    cover_url: null,
-    title: "Was ihr nicht seht",
-    description: "Über Diskriminierung, Rassismus und Feminismus in Deutschland — persönlich und politisch.",
+    feed_url: "sophie-passmann",
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/6d/ef/47/6def47e5-b67a-781b-6c65-0662adea7a06/mza_7087549493904101574.jpg/600x600bb.jpg",
+    title: "Der Sophie Passmann Podcast",
+    description: "Sophie Passmann über Feminismus, Popkultur und die Absurditäten des Alltags.",
     latest_ep: null,
     duration: null,
-    website_url: "https://www.ardaudiothek.de/sendung/was-ihr-nicht-seht/94260048/",
+    website_url: "https://podcasts.apple.com/de/podcast/der-sophie-passmann-podcast/id1539090263",
   },
 ];
 
