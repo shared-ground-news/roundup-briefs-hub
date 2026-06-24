@@ -159,8 +159,8 @@ const Navbar = () => {
       </div>
 
       {/* ── NAV BAR (desktop, expanded state only) ── */}
-      <div className={`transition-all duration-300 ease-in-out overflow-hidden border-b border-border ${scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"}`}>
-        <nav className="hidden md:block container max-w-[1400px] mx-auto px-6">
+      <div className={`hidden md:block transition-all duration-300 ease-in-out overflow-hidden border-b border-border ${scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"}`}>
+        <nav className="container max-w-[1400px] mx-auto px-6">
           <ul className="flex items-center justify-center gap-8 py-3">
             {navItems.map((item) => (
               <li key={item.path}>
