@@ -240,7 +240,7 @@ export function useCountryArticles() {
 const STATIC_PODCASTS = [
   {
     feed_url: "lila-podcast",
-    cover_url: "https://lila-podcast.de/wp-content/uploads/2021/01/lila-podcast-cover.jpg",
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/bb/3a/77/bb3a77d2-d008-5893-89fc-5867ec9922e2/mza_16797203559299000238.jpeg/600x600bb.jpg",
     title: "Lila Podcast",
     description: "Feminismus für alle — intersektional, politisch, persönlich.",
     latest_ep: null,
@@ -249,7 +249,7 @@ const STATIC_PODCASTS = [
   },
   {
     feed_url: "grosse-toechter",
-    cover_url: "https://images.squarespace-cdn.com/content/v1/5e3b1e5a4f4e0d6c9e8b9e3a/1581000000000-GROSSE-TOECHTER-COVER.jpg",
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/80/e6/94/80e6947f-7584-5e57-d565-09be6214ea2d/mza_10762060924271713233.jpg/600x600bb.jpg",
     title: "Große Töchter",
     description: "Feministischer Talk über Körper, Gesellschaft und das Leben als Frau — aus Wien.",
     latest_ep: null,
@@ -258,7 +258,7 @@ const STATIC_PODCASTS = [
   },
   {
     feed_url: "feministisch-unterwegs",
-    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts125/v4/4b/6f/2e/4b6f2e3a-1234-abcd-efgh-000000000000/mza_000000000000.jpg/600x600bb.jpg",
+    cover_url: null,
     title: "Feministisch Unterwegs",
     description: "Amnesty International im Gespräch über Frauenrechte und Menschenrechte weltweit.",
     latest_ep: null,
@@ -267,7 +267,7 @@ const STATIC_PODCASTS = [
   },
   {
     feed_url: "queergestreift",
-    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/queergestreift/cover.jpg/600x600bb.jpg",
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts115/v4/b2/bf/c7/b2bfc76a-9469-8325-0a45-99374bfad0b3/mza_12623188629185442526.jpg/600x600bb.jpg",
     title: "Queergestreift",
     description: "Queere Themen, Geschichten und Gespräche — für die LGBTQIA+-Community und alle, die zuhören wollen.",
     latest_ep: null,
@@ -276,7 +276,7 @@ const STATIC_PODCASTS = [
   },
   {
     feed_url: "diepodcastin",
-    cover_url: null,
+    cover_url: "https://is1-ssl.mzstatic.com/image/thumb/Podcasts114/v4/67/fb/e6/67fbe645-fde1-dc23-8164-04923b683825/mza_15518128877247076809.jpg/600x600bb.jpg",
     title: "DiePodcastin",
     description: "Feministisch, politisch, divers — Gespräche über Gleichstellung und gesellschaftliche Themen.",
     latest_ep: null,

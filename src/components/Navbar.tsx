@@ -77,7 +77,7 @@ const Navbar = () => {
               <Bookmark size={18} />
             </button>
             {/* Newsletter popover */}
-            <div className="relative" ref={mailRef}>
+            <div className="relative flex items-center" ref={mailRef}>
               <button
                 onClick={() => setMailOpen((o) => !o)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
