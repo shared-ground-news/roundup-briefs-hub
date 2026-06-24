@@ -162,7 +162,7 @@ const Navbar = () => {
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Toggle menu"
               >
-                {menuOpen ? <X size={20} /> : <Menu size={20} />}
+                <Menu size={20} />
               </button>
             </div>
           </div>
@@ -182,34 +182,49 @@ const Navbar = () => {
         )}
       </header>
 
-      {/* ── Nav overlay — fixed just below sticky header ─────────────────────── */}
-      {menuOpen && (
-        <>
-          <nav
-            className="fixed left-0 right-0 bg-background border-b border-border shadow-lg z-40"
-            style={{ top: "var(--header-height, 37px)" }}
+      {/* ── Side drawer — slides in from the right ──────────────────────────── */}
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMenuOpen(false)}
+      />
+      {/* Drawer panel */}
+      <nav
+        className={`fixed top-0 right-0 h-full w-1/2 max-w-xs bg-background z-50 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {/* Close button */}
+        <div className="flex justify-end px-5 py-4 border-b border-border">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Close menu"
           >
-            <ul className="container max-w-[1400px] mx-auto px-6 divide-y divide-border">
-              {navItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    onClick={() => setMenuOpen(false)}
-                    className={`block py-4 text-sm font-medium uppercase tracking-widest transition-colors ${
-                      location.pathname === item.path
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
-        </>
-      )}
+            <X size={20} />
+          </button>
+        </div>
+        {/* Nav links */}
+        <ul className="flex flex-col divide-y divide-border">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <Link
+                to={item.path}
+                onClick={() => setMenuOpen(false)}
+                className={`block px-8 py-5 text-sm font-medium uppercase tracking-widest transition-colors ${
+                  location.pathname === item.path
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </>
   );
 };
