@@ -56,6 +56,21 @@ def run():
 
     print("🖼  Starting image backfill...\n")
 
+    # Check if image_url column exists first
+    try:
+        test = supabase.table("articles").select("id, image_url").limit(1).execute()
+    except Exception as e:
+        if "image_url" in str(e) and ("does not exist" in str(e) or "schema cache" in str(e)):
+            print("❌  STOPP: Die Spalte 'image_url' existiert noch nicht in Supabase!")
+            print()
+            print("   Valeria muss im Supabase Dashboard → SQL Editor folgenden Befehl ausführen:")
+            print()
+            print("   ALTER TABLE articles ADD COLUMN IF NOT EXISTS image_url TEXT;")
+            print()
+            print("   Danach dieses Skript erneut ausführen.")
+            return
+        raise
+
     while True:
         # Fetch a batch of articles with no image_url
         resp = (

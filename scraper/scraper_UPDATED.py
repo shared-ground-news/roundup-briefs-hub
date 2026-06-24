@@ -1112,7 +1112,20 @@ def scrape_all_feeds():
                     ).execute()
                     new_count = len(batch_rows)
                 except Exception as e:
-                    print(f"     ⚠️  Supabase upsert error for {source_name}: {e}", flush=True)
+                    err_str = str(e)
+                    if "image_url" in err_str and ("does not exist" in err_str or "schema cache" in err_str):
+                        # image_url column missing — retry without it
+                        rows_no_img = [{k: v for k, v in r.items() if k != "image_url"} for r in batch_rows]
+                        try:
+                            _supabase.table("articles").upsert(rows_no_img, ignore_duplicates=True).execute()
+                            new_count = len(batch_rows)
+                            if source_name == list(FEEDS.keys())[0]:  # only print once
+                                print("     ⚠️  image_url column missing in Supabase — run in SQL Editor:", flush=True)
+                                print("          ALTER TABLE articles ADD COLUMN IF NOT EXISTS image_url TEXT;", flush=True)
+                        except Exception as e2:
+                            print(f"     ⚠️  Supabase upsert error for {source_name}: {e2}", flush=True)
+                    else:
+                        print(f"     ⚠️  Supabase upsert error for {source_name}: {e}", flush=True)
 
             if conn:
                 conn.commit()
@@ -1237,6 +1250,17 @@ def backfill_missing_images(batch_size: int = 200, timeout: int = 3, workers: in
         return
 
     import concurrent.futures
+
+    # Check if image_url column exists before running backfill
+    try:
+        _supabase.table("articles").select("id, image_url").limit(1).execute()
+    except Exception as e:
+        if "image_url" in str(e) and ("does not exist" in str(e) or "schema cache" in str(e)):
+            print("⚠️  Backfill skipped — 'image_url' column not in Supabase.", flush=True)
+            print("   → Valeria: Supabase Dashboard → SQL Editor → ausführen:", flush=True)
+            print("       ALTER TABLE articles ADD COLUMN IF NOT EXISTS image_url TEXT;", flush=True)
+            return
+        raise
 
     print("\n🖼  Backfilling missing images (parallel)...", flush=True)
     offset    = 0
