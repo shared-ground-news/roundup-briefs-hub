@@ -31,7 +31,7 @@ interface IndexProps {
   locale: Locale;
 }
 
-const ALL_TOPICS = ["Alle", "Bodily Autonomy", "Narrative Power", "Law & Governance", "Criminal Justice", "Citizenship"];
+const ALL_TOPICS = ["Alle Artikel", "Bodily Autonomy", "Narrative Power", "Law & Governance", "Criminal Justice", "Citizenship"];
 
 // ─── Static podcast list (Supabase podcasts API can replace this later) ──────
 const PODCASTS = [
@@ -99,7 +99,7 @@ const LoadingScreen = () => (
 const TILES_PER_PAGE = 9;
 
 const Index = ({ locale }: IndexProps) => {
-  const [activeTopic, setActiveTopic] = useState("Alle");
+  const [activeTopic, setActiveTopic] = useState("Alle Artikel");
   const [visibleTileCount, setVisibleTileCount] = useState(TILES_PER_PAGE);
 
   const { articles, loading, error } = useArticles(locale);
@@ -107,27 +107,27 @@ const Index = ({ locale }: IndexProps) => {
   // Only show tabs that actually have articles
   const availableTopics = useMemo(() => {
     const cats = new Set(articles.map((a) => getArticleCategory(a)));
-    return ALL_TOPICS.filter((t) => t === "Alle" || cats.has(t));
+    return ALL_TOPICS.filter((t) => t === "Alle Artikel" || cats.has(t));
   }, [articles]);
 
   // Reset active topic if it becomes unavailable
   useEffect(() => {
-    if (activeTopic !== "Alle" && !availableTopics.includes(activeTopic)) {
-      setActiveTopic("Alle");
+    if (activeTopic !== "Alle Artikel" && !availableTopics.includes(activeTopic)) {
+      setActiveTopic("Alle Artikel");
     }
   }, [availableTopics, activeTopic]);
 
   // Filter articles by active topic
   const filtered = useMemo(() => {
     setVisibleTileCount(TILES_PER_PAGE);
-    if (activeTopic === "Alle") return articles;
+    if (activeTopic === "Alle Artikel") return articles;
     return articles.filter((a) => getArticleCategory(a) === activeTopic);
   }, [articles, activeTopic]);
 
-  // ── Daily hero pin (only for "Alle" tab) ─────────────────────────────────
+  // ── Daily hero pin (only for "Alle Artikel" tab) ─────────────────────────────────
   const featured = useMemo(() => {
     if (!filtered.length) return null;
-    if (activeTopic === "Alle") {
+    if (activeTopic === "Alle Artikel") {
       const today = new Date().toDateString();
       try {
         const saved = localStorage.getItem("sg_daily_hero");
@@ -180,8 +180,8 @@ const Index = ({ locale }: IndexProps) => {
   const shownIds = new Set<number>([
     ...(featured ? [featured.id] : []),
     ...leftArticles.map((a) => a.id),
-    ...(sideTwo && activeTopic !== "Alle" ? [sideTwo.id] : []),
-    ...(sideThree && activeTopic !== "Alle" ? [sideThree.id] : []),
+    ...(sideTwo && activeTopic !== "Alle Artikel" ? [sideTwo.id] : []),
+    ...(sideThree && activeTopic !== "Alle Artikel" ? [sideThree.id] : []),
   ]);
   const tileArticles = filtered.filter((a) => !shownIds.has(a.id));
   const visibleTiles = tileArticles.slice(0, visibleTileCount);
@@ -212,7 +212,7 @@ const Index = ({ locale }: IndexProps) => {
           </div>
         ) : (
           <>
-            {activeTopic === "Alle" ? (
+            {activeTopic === "Alle Artikel" ? (
               /* ═══ "ALLE" TAB — 3-column editorial layout ═══ */
               <div className="grid grid-cols-12 gap-y-8 gap-x-6 md:gap-8">
 
