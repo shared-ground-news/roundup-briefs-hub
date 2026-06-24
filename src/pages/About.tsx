@@ -54,7 +54,7 @@ const About = () => {
                 {
                   icon: Rss,
                   title: "RSS-Feeds",
-                  desc: "Wir lesen RSS-Feeds von über 40 deutschsprachigen Medien aus Deutschland, Österreich und der Schweiz.",
+                  desc: "Wir lesen RSS-Feeds von über 35 deutschsprachigen Medien aus Deutschland, Österreich und der Schweiz.",
                 },
                 {
                   icon: Globe,
@@ -69,7 +69,7 @@ const About = () => {
                 {
                   icon: BookOpen,
                   title: "Themen-Clustering",
-                  desc: "Artikel werden nach Themen gruppiert — Politik, Kultur, Wirtschaft und Sport — für eine übersichtliche Navigation.",
+                  desc: "Artikel werden nach Themen gruppiert — Bodily Autonomy, Narrative Power, Law & Governance, Criminal Justice, Citizenship — für eine übersichtliche Navigation.",
                 },
               ].map(({ icon: Icon, title, desc }) => (
                 <div key={title} className="p-5 bg-card border border-border rounded-sm">
@@ -129,7 +129,7 @@ const About = () => {
               <h4 className="headline-md mb-4">Auf einen Blick</h4>
               <div className="space-y-4">
                 {[
-                  { number: "40+", label: "Medien im DACH-Raum" },
+                  { number: "36", label: "Medien im DACH-Raum" },
                   { number: "3", label: "Länder: DE, AT, CH" },
                   { number: "12h", label: "Aktualisierungsintervall" },
                   { number: "6", label: "Kuratierte Podcasts" },

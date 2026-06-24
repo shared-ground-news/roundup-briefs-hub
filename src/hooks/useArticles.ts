@@ -272,7 +272,7 @@ const STATIC_PODCASTS = [
     description: "Queere Themen, Geschichten und Gespräche — für die LGBTQIA+-Community und alle, die zuhören wollen.",
     latest_ep: null,
     duration: null,
-    website_url: "https://open.spotify.com/show/queergestreift",
+    website_url: "https://queergestreift.podigee.io/",
   },
   {
     feed_url: "diepodcastin",
@@ -290,7 +290,7 @@ const STATIC_PODCASTS = [
     description: "Über Diskriminierung, Rassismus und Feminismus in Deutschland — persönlich und politisch.",
     latest_ep: null,
     duration: null,
-    website_url: "https://open.spotify.com/show/wasihrnichtseht",
+    website_url: "https://www.ardaudiothek.de/sendung/was-ihr-nicht-seht/94260048/",
   },
 ];
 

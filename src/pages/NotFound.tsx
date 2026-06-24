@@ -1,5 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,14 +11,18 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center font-sans">
-        <h1 className="mb-4 text-4xl font-bold text-foreground">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Seite nicht gefunden</p>
-        <a href="/" className="text-foreground underline underline-offset-2 hover:opacity-70 transition-opacity">
-          Zur Startseite
-        </a>
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="mb-4 text-4xl font-headline font-black text-foreground">404</h1>
+          <p className="mb-6 text-lg text-muted-foreground">Diese Seite existiert nicht.</p>
+          <Link to="/de" className="text-foreground underline underline-offset-2 hover:opacity-70 transition-opacity">
+            Zurück zum News Feed
+          </Link>
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

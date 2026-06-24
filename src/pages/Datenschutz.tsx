@@ -16,24 +16,25 @@ const Datenschutz = () => (
             der DSGVO sind:<br />
             Valeria Pinto &amp; Alexandra Brandl<br />
             10119 Berlin<br />
-            E-Mail: <a href="mailto:sharedgroundnews@gmail.com" className="underline underline-offset-2">sharedgroundnews@gmail.com</a>
+            E-Mail:{" "}
+            <a href="mailto:sharedgroundnews@gmail.com" className="underline underline-offset-2">
+              sharedgroundnews@gmail.com
+            </a>
           </p>
         </section>
 
         <section>
           <h3 className="font-semibold mb-2">2. Welche Daten wir verarbeiten</h3>
           <p className="text-muted-foreground mb-3">
-            <strong className="text-foreground">Ohne Registrierung:</strong> Beim
-            bloßen Aufrufen der Website werden keine personenbezogenen Daten von
-            uns gespeichert. Es werden keine Tracking-Cookies gesetzt und keine
-            Analyse-Tools eingesetzt.
+            <strong className="text-foreground">Beim Aufrufen der Website:</strong> Es
+            werden keine personenbezogenen Daten von uns gespeichert. Es werden
+            keine Tracking-Cookies gesetzt und keine Analyse-Tools eingesetzt.
           </p>
           <p className="text-muted-foreground">
-            <strong className="text-foreground">Mit Konto (optional):</strong> Wenn
-            du dich registrierst oder einloggst, verarbeiten wir deine
-            E-Mail-Adresse sowie gespeicherte Artikel und Themen-Präferenzen.
-            Diese Daten werden ausschließlich für die Bereitstellung deines Kontos
-            genutzt.
+            <strong className="text-foreground">Newsletter (optional):</strong> Wenn
+            du dich für unseren Newsletter einträgst, speichern wir ausschließlich
+            deine E-Mail-Adresse. Diese wird nur für den Versand des Newsletters
+            verwendet und nicht an Dritte weitergegeben.
           </p>
         </section>
 
@@ -45,14 +46,6 @@ const Datenschutz = () => (
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-1">
             <li>
-              <strong className="text-foreground">Supabase Inc.</strong> (USA) —
-              Authentifizierung und Speicherung von Kontodaten. Supabase ist nach
-              dem EU-US Data Privacy Framework zertifiziert.{" "}
-              <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
-                Datenschutzerklärung Supabase
-              </a>
-            </li>
-            <li>
               <strong className="text-foreground">Cloudflare Inc.</strong> (USA) —
               Hosting und Auslieferung der Website. Cloudflare verarbeitet
               technisch notwendige Verbindungsdaten (IP-Adresse) zur
@@ -61,13 +54,21 @@ const Datenschutz = () => (
                 Datenschutzerklärung Cloudflare
               </a>
             </li>
+            <li>
+              <strong className="text-foreground">Supabase Inc.</strong> (USA) —
+              Speicherung von Newsletter-Anmeldungen. Supabase ist nach dem
+              EU-US Data Privacy Framework zertifiziert.{" "}
+              <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                Datenschutzerklärung Supabase
+              </a>
+            </li>
           </ul>
         </section>
 
         <section>
           <h3 className="font-semibold mb-2">4. Inhalte Dritter (RSS-Feeds)</h3>
           <p className="text-muted-foreground">
-            shared ground aggregiert Artikel aus externen RSS-Feeds. Beim Klick
+            Shared Ground aggregiert Artikel aus externen RSS-Feeds. Beim Klick
             auf einen Artikel verlässt du unsere Website und rufst die jeweilige
             externe Quelle auf. Für deren Datenschutzpraktiken sind wir nicht
             verantwortlich.
@@ -99,10 +100,9 @@ const Datenschutz = () => (
           <h3 className="font-semibold mb-2">6. Beschwerderecht</h3>
           <p className="text-muted-foreground">
             Du hast das Recht, dich bei einer Datenschutzaufsichtsbehörde zu
-            beschweren. Zuständig für Baden-Württemberg ist der{" "}
-            <a href="https://www.baden-wuerttemberg.datenschutz.de" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
-              Landesbeauftragte für den Datenschutz und die Informationsfreiheit
-              Baden-Württemberg
+            beschweren. Zuständig für Berlin ist der{" "}
+            <a href="https://www.datenschutz-berlin.de" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+              Berliner Beauftragte für Datenschutz und Informationsfreiheit
             </a>
             .
           </p>

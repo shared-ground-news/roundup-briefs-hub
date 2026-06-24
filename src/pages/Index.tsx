@@ -60,7 +60,7 @@ const PODCASTS = [
     description: "Queere Themen, Geschichten und Gespräche",
     latest_ep: null,
     duration: null,
-    website_url: "https://open.spotify.com/show/queergestreift",
+    website_url: "https://queergestreift.podigee.io/",
   },
   {
     feed_url: "diepodcastin",
@@ -102,7 +102,7 @@ const Index = ({ locale }: IndexProps) => {
   const [activeTopic, setActiveTopic] = useState("Alle");
   const [visibleTileCount, setVisibleTileCount] = useState(TILES_PER_PAGE);
 
-  const { articles, loading } = useArticles(locale);
+  const { articles, loading, error } = useArticles(locale);
 
   // Only show tabs that actually have articles
   const availableTopics = useMemo(() => {
@@ -200,6 +200,16 @@ const Index = ({ locale }: IndexProps) => {
 
         {loading ? (
           <LoadingScreen />
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 text-center">
+            <p className="text-muted-foreground">Artikel konnten nicht geladen werden.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="text-sm underline underline-offset-2 text-foreground hover:opacity-70 transition-opacity"
+            >
+              Seite neu laden
+            </button>
+          </div>
         ) : (
           <>
             {activeTopic === "Alle" ? (

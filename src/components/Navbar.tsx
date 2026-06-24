@@ -90,7 +90,7 @@ const Navbar = () => {
 
             {/* Date — left */}
             <span className="body-sm text-muted-foreground hidden sm:block">
-              {new Date().toLocaleDateString("en-US", {
+              {new Date().toLocaleDateString("de-DE", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -98,9 +98,9 @@ const Navbar = () => {
               })}
             </span>
             <span className="body-sm text-muted-foreground sm:hidden">
-              {new Date().toLocaleDateString("en-US", {
-                month: "short",
+              {new Date().toLocaleDateString("de-DE", {
                 day: "numeric",
+                month: "short",
                 year: "numeric",
               })}
             </span>
