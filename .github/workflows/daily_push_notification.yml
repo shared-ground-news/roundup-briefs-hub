@@ -17,11 +17,12 @@ jobs:
         run: |
           # Fetch latest German article from Supabase
           ARTICLE=$(curl -s \
-            "https://mhnjjstdayhkdwfxfxlv.supabase.co/rest/v1/articles?locale=eq.de&order=published_at.desc.nullslast&limit=1&select=title,link" \
+            "https://mhnjjstdayhkdwfxfxlv.supabase.co/rest/v1/articles?locale=eq.de&order=published_at.desc.nullslast&limit=1&select=title,summary,link" \
             -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E" \
             -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E")
 
           TITLE=$(echo "$ARTICLE" | jq -r '.[0].title // empty')
+          SUMMARY=$(echo "$ARTICLE" | jq -r '.[0].summary // empty' | cut -c1-100)
 
           if [ -z "$TITLE" ]; then
             echo "Kein Artikel gefunden – Notification übersprungen."
@@ -33,11 +34,12 @@ jobs:
           # Build JSON payload safely (handles quotes and special chars in title)
           PAYLOAD=$(jq -n \
             --arg title "$TITLE" \
+            --arg summary "$SUMMARY" \
             '{
               app_id: "cdbb5e39-5291-4e60-b922-a3f6cb02e4f5",
               included_segments: ["All"],
               headings: { en: $title, de: $title },
-              contents: { en: "·", de: "·" },
+              contents: { en: $summary, de: $summary },
               web_url: "https://sharedgroundnews.pages.dev/de"
             }')
 
