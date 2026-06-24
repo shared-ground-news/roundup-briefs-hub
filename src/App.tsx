@@ -13,6 +13,7 @@ import Podcasts from "./pages/Podcasts";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 import Newsletter from "./pages/Newsletter";
 
 // Auth-required pages (Valeria's)
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/about"      element={<About />} />
             <Route path="/contact"    element={<Contact />} />
             <Route path="/impressum"  element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/newsletter" element={<Newsletter />} />
 
             {/* Saved articles (auth-aware) */}

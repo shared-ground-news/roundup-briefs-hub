@@ -10,9 +10,10 @@ const Footer = () => (
       </span>
       <div className="flex items-center gap-0 text-[11px] text-[#999]">
         {[
-          { label: "About",    to: "/about"     },
-          { label: "Kontakt",  to: "/contact"   },
-          { label: "Impressum", to: "/impressum" },
+          { label: "About",         to: "/about"       },
+          { label: "Kontakt",       to: "/contact"     },
+          { label: "Impressum",     to: "/impressum"   },
+          { label: "Datenschutz",   to: "/datenschutz" },
         ].map(({ label, to }, i) => (
           <span key={label} className="flex items-center">
             {i > 0 && <span className="mx-1.5 text-[#ccc]">·</span>}
