@@ -115,14 +115,11 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="container max-w-[1400px] mx-auto px-4 md:px-6 py-4 md:py-5 text-center border-b border-border">
+        <div className="container max-w-[1400px] mx-auto px-4 md:px-6 py-3 md:py-4 text-center border-b border-border">
           <Link to="/" className="inline-block">
-            <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tight text-foreground">
+            <h1 className="font-headline text-2xl md:text-4xl font-black tracking-tight text-foreground">
               Shared Ground
             </h1>
-            <p className="body-sm text-muted-foreground mt-1 tracking-widest uppercase">
-              Global Feminist News & Analysis
-            </p>
           </Link>
         </div>
       </div>
