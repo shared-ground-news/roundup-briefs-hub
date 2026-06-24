@@ -13,8 +13,7 @@ const Impressum = () => (
           <p className="body-sm font-semibold mb-1">Angaben gemäß § 5 TMG</p>
           <p className="body-sm text-muted-foreground leading-relaxed">
             Valeria Pinto &amp; Alexandra Brandl<br />
-            F4<br />
-            68159 Mannheim<br />
+                        10119 Berlin<br />
             Deutschland
           </p>
         </div>
@@ -31,7 +30,7 @@ const Impressum = () => (
           <p className="body-sm font-semibold mb-1">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</p>
           <p className="body-sm text-muted-foreground leading-relaxed">
             Valeria Pinto &amp; Alexandra Brandl<br />
-            F4, 68159 Mannheim
+            F4, 10119 Berlin
           </p>
         </div>
         <div>

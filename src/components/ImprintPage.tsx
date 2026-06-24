@@ -20,8 +20,7 @@ const ImprintPage = ({ onClose }: ImprintPageProps) => {
 
       <p className="text-[0.9rem] text-foreground leading-relaxed mb-6">
         Valeria Pinto & Alexandra Brandl<br />
-        F4<br />
-        68159 Mannheim<br />
+        10119 Berlin<br />
         Germany
       </p>
 
@@ -40,7 +39,7 @@ const ImprintPage = ({ onClose }: ImprintPageProps) => {
       </p>
       <p className="text-[0.9rem] text-foreground leading-relaxed mb-6">
         Valeria Pinto & Alexandra Brandl<br />
-        F4, 68159 Mannheim
+        10119 Berlin
       </p>
 
       <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-2">
