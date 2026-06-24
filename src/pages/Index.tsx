@@ -8,7 +8,6 @@ import TimedImage from "@/components/TimedImage";
 import PodcastCard from "@/components/PodcastCard";
 import TopicFilterBar from "@/components/TopicFilterBar";
 import { useArticles } from "@/hooks/useArticles";
-import { useAuth } from "@/hooks/useAuth";
 import { useOgImage } from "@/hooks/useOgImage";
 import {
   getArticleCategory,
@@ -102,12 +101,6 @@ const TILES_PER_PAGE = 9;
 const Index = ({ locale }: IndexProps) => {
   const [activeTopic, setActiveTopic] = useState("Alle");
   const [visibleTileCount, setVisibleTileCount] = useState(TILES_PER_PAGE);
-  const { setLocale } = useAuth();
-
-  // Keep AuthContext locale in sync (for OnboardingModal translations)
-  useEffect(() => {
-    setLocale(locale);
-  }, [locale, setLocale]);
 
   const { articles, loading } = useArticles(locale);
 

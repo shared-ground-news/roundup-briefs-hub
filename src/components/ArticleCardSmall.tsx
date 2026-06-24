@@ -1,4 +1,4 @@
-import { Bookmark, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { useOgImage } from "@/hooks/useOgImage";
 import TimedImage from "@/components/TimedImage";
 
@@ -95,13 +95,6 @@ const ArticleCardSmall = ({
             <span className="body-sm text-muted-foreground">{date}</span>
           </div>
         </div>
-        <button
-          className="self-start mt-1 text-muted-foreground hover:text-foreground transition-colors opacity-0 group-hover:opacity-100"
-          aria-label="Save article"
-          onClick={(e) => e.preventDefault()}
-        >
-          <Bookmark size={16} />
-        </button>
       </article>
     );
 

@@ -1,21 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, User, Bookmark, Menu, X, Mail } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { Link, useLocation } from "react-router-dom";
+import { Search, Menu, X, Mail } from "lucide-react";
 import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
 
 const navItems = [
   { label: "Home", path: "/de" },
   { label: "Podcasts", path: "/podcasts" },
   { label: "About", path: "/about" },
-  { label: "Saved", path: "/saved" },
 ];
 
 const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, requireAuth, signOut } = useAuth();
-  const [toast, setToast] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mailOpen, setMailOpen] = useState(false);
   const [mailEmail, setMailEmail] = useState("");
@@ -38,20 +33,6 @@ const Navbar = () => {
     await subscribe({ email: mailEmail });
   };
 
-  const showToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2500);
-  };
-
-  const handleUserClick = () => {
-    if (user) {
-      signOut();
-      showToast("Abgemeldet.");
-    } else {
-      requireAuth(() => {});
-    }
-  };
-
   return (
     <>
     <header className="w-full border-b border-border bg-background sticky top-0 z-50 relative">
@@ -70,11 +51,8 @@ const Navbar = () => {
             {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </span>
           <div className="flex items-center gap-3 md:gap-4">
-            <button onClick={() => showToast("Suche wird bald verfügbar sein.")} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
+            <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search" disabled>
               <Search size={18} />
-            </button>
-            <button onClick={() => navigate("/saved")} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Saved articles">
-              <Bookmark size={18} />
             </button>
             {/* Newsletter popover */}
             <div className="relative flex items-center" ref={mailRef}>
@@ -115,10 +93,6 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <button onClick={handleUserClick} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" aria-label={user ? "Sign out" : "Sign in"}>
-              <User size={18} />
-              <span className="body-sm font-medium hidden md:inline">{user ? "Sign Out" : "Sign In"}</span>
-            </button>
             {/* Hamburger — mobile only */}
             <button
               onClick={() => setMenuOpen((o) => !o)}
@@ -128,11 +102,6 @@ const Navbar = () => {
               {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-          {toast && (
-            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-foreground text-background text-[13px] px-5 py-2.5 rounded-sm shadow-lg pointer-events-none">
-              {toast}
-            </div>
-          )}
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Bookmark, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { useOgImage } from "@/hooks/useOgImage";
 import TimedImage from "@/components/TimedImage";
 
@@ -60,9 +60,6 @@ const FeaturedArticle = ({
         <div className="flex items-center gap-3">
           <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Share">
             <Share2 size={16} />
-          </button>
-          <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Save">
-            <Bookmark size={16} />
           </button>
         </div>
       </div>
