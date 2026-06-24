@@ -22,42 +22,42 @@ export type { Article, Stats };
 // Bodily Autonomy | Narrative Power | Law & Governance | Criminal Justice | Citizenship
 const TOPIC_DISPLAY: Record<string, string> = {
   // Old German topic keys
-  "Reproduktive Rechte":     "Bodily Autonomy",
-  "Gesundheit & Medizin":    "Bodily Autonomy",
-  "Kultur & Medien":         "Narrative Power",
-  "Gewalt & Sicherheit":     "Criminal Justice",
-  "Menschenrechte":          "Citizenship",
-  "Migration & Asyl":        "Citizenship",
-  "Recht & Politik":         "Law & Governance",
-  "Politik & Regierung":     "Law & Governance",
-  "Lohnluecke & Wirtschaft": "Law & Governance",
-  "Arbeit & Wirtschaft":     "Law & Governance",
-  "LGBTQIA+":                "Citizenship",
-  "Sport":                   "Narrative Power",
+  "Reproduktive Rechte":     "Körper",
+  "Gesundheit & Medizin":    "Körper",
+  "Kultur & Medien":         "Narrative",
+  "Gewalt & Sicherheit":     "Justiz",
+  "Menschenrechte":          "Gesellschaft",
+  "Migration & Asyl":        "Gesellschaft",
+  "Recht & Politik":         "Recht & Politik",
+  "Politik & Regierung":     "Recht & Politik",
+  "Lohnluecke & Wirtschaft": "Recht & Politik",
+  "Arbeit & Wirtschaft":     "Recht & Politik",
+  "LGBTQIA+":                "Gesellschaft",
+  "Sport":                   "Narrative",
 
   // New English topic keys (Supabase-era scraper)
-  "Bodily Autonomy & Reproductive Justice": "Bodily Autonomy",
-  "Culture":                              "Narrative Power",
-  "Media & Narrative Power":              "Narrative Power",
-  "Culture, Media & Narrative Power":     "Narrative Power",
-  "Technology & Digital Power":           "Narrative Power",
-  "Violence":                             "Criminal Justice",
-  "Safety & Criminal Justice":            "Criminal Justice",
-  "Violence, Safety & Criminal Justice":  "Criminal Justice",
-  "State Power":                          "Law & Governance",
-  "Law & Governance":                     "Law & Governance",
-  "State Power, Law & Governance":        "Law & Governance",
-  "Anti-Rights & Backlash Movements":     "Law & Governance",
-  "Economic & Labour Justice":            "Law & Governance",
-  "Climate & Environmental Justice":      "Law & Governance",
-  "Migration":                            "Citizenship",
-  "Borders & Citizenship":               "Citizenship",
-  "Migration, Borders & Citizenship":    "Citizenship",
+  "Bodily Autonomy & Reproductive Justice": "Körper",
+  "Culture":                              "Narrative",
+  "Media & Narrative Power":              "Narrative",
+  "Culture, Media & Narrative Power":     "Narrative",
+  "Technology & Digital Power":           "Narrative",
+  "Violence":                             "Justiz",
+  "Safety & Criminal Justice":            "Justiz",
+  "Violence, Safety & Criminal Justice":  "Justiz",
+  "State Power":                          "Recht & Politik",
+  "Recht & Politik":                     "Recht & Politik",
+  "State Power, Law & Governance":        "Recht & Politik",
+  "Anti-Rights & Backlash Movements":     "Recht & Politik",
+  "Economic & Labour Justice":            "Recht & Politik",
+  "Climate & Environmental Justice":      "Recht & Politik",
+  "Migration":                            "Gesellschaft",
+  "Borders & Citizenship":               "Gesellschaft",
+  "Migration, Borders & Citizenship":    "Gesellschaft",
 
   // Raw category field values written by the scraper
-  "women":    "Law & Governance",
-  "lgbtqia+": "Citizenship",
-  "general":  "Law & Governance",
+  "women":    "Recht & Politik",
+  "lgbtqia+": "Gesellschaft",
+  "general":  "Recht & Politik",
 };
 
 export function mapTopic(backendTopic: string): string {
@@ -83,16 +83,16 @@ export function getArticleCategory(article: Article): string {
     if (mapped) return mapped;
   }
 
-  return "Law & Governance";
+  return "Recht & Politik";
 }
 
 export function getCategoryColor(
   category: string
 ): "blue" | "orange" | "magenta" {
-  if (category === "Bodily Autonomy") return "magenta";
-  if (category === "Narrative Power") return "orange";
-  if (category === "Criminal Justice") return "magenta";
-  if (category === "Citizenship") return "orange";
+  if (category === "Körper") return "magenta";
+  if (category === "Narrative") return "orange";
+  if (category === "Justiz") return "magenta";
+  if (category === "Gesellschaft") return "orange";
   return "blue"; // Law & Governance + fallback
 }
 
