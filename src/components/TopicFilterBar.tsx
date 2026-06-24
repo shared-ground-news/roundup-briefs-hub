@@ -14,7 +14,7 @@ const TopicFilterBar = ({ topics, active, onSelect }: TopicFilterBarProps) => {
   };
 
   return (
-    <div className="sticky top-[49px] z-40 bg-background border-b border-border pt-2 pb-2 mb-4 overflow-x-auto scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
+    <div className="sticky top-[33px] md:top-[75px] z-40 bg-background border-b border-border pt-2 pb-2 mb-4 overflow-x-auto scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
       <div className="flex items-center gap-0 flex-nowrap min-w-max md:min-w-0 md:flex-wrap">
         {topics.map((topic, i) => (
           <span key={topic} className="flex items-center">
