@@ -48,11 +48,24 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
-        // Cache article pages and static assets
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+        // Only precache JS/CSS/images — NOT html (fetched fresh each time)
+        globPatterns: ["**/*.{js,css,ico,png,svg,woff2}"],
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
-            // Cache API calls to the articles DB (Render)
+            // HTML navigation: always fetch from network, fall back to cache
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "html-cache",
+              networkTimeoutSeconds: 5,
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // API calls to the articles DB (Render)
             urlPattern: /^https:\/\/.*\.onrender\.com\/.*/i,
             handler: "NetworkFirst",
             options: {
@@ -61,9 +74,7 @@ export default defineConfig(({ mode }) => ({
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60, // 1 hour
               },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
+              cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
