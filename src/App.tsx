@@ -12,7 +12,6 @@ import Index from "./pages/Index";
 import Podcasts from "./pages/Podcasts";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
 import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
@@ -40,7 +39,7 @@ const App = () => (
           <Route path="/podcasts"    element={<Podcasts />} />
           <Route path="/about"       element={<About />} />
           <Route path="/contact"     element={<Contact />} />
-          <Route path="/impressum"   element={<Impressum />} />
+          <Route path="/impressum"   element={<Navigate to="/contact" replace />} />
           <Route path="/datenschutz" element={<Datenschutz />} />
           <Route path="/newsletter"  element={<Newsletter />} />
 

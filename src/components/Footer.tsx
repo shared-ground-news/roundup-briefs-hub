@@ -12,7 +12,6 @@ const Footer = () => (
         {[
           { label: "About",         to: "/about"       },
           { label: "Kontakt",       to: "/contact"     },
-          { label: "Impressum",     to: "/impressum"   },
           { label: "Datenschutz",   to: "/datenschutz" },
         ].map(({ label, to }, i) => (
           <span key={label} className="flex items-center">

@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, Mail } from "lucide-react";
+import { Menu, X, Mail } from "lucide-react";
 import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
 
 const navItems = [
-  { label: "Home", path: "/de" },
+  { label: "News Feed", path: "/de" },
   { label: "Podcasts", path: "/podcasts" },
   { label: "About", path: "/about" },
 ];
@@ -51,9 +51,6 @@ const Navbar = () => {
             {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </span>
           <div className="flex items-center gap-3 md:gap-4">
-            <button className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Search" disabled>
-              <Search size={18} />
-            </button>
             {/* Newsletter popover */}
             <div className="relative flex items-center" ref={mailRef}>
               <button
