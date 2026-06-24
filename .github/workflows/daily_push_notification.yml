@@ -1,0 +1,60 @@
+name: Daily Push Notification
+
+on:
+  schedule:
+    # Every day at 7:00 UTC = 9:00 Uhr Berlin (Sommerzeit)
+    - cron: '0 7 * * *'
+  workflow_dispatch: # Manual trigger from GitHub Actions tab
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch latest article and send push notification
+        env:
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+        run: |
+          # Fetch latest German article from Supabase
+          ARTICLE=$(curl -s \
+            "https://mhnjjstdayhkdwfxfxlv.supabase.co/rest/v1/articles?locale=eq.de&order=published_at.desc.nullslast&limit=1&select=title,url" \
+            -H "apikey: sb_publishable_sF4VfRoiTVl6KFgnTbYztg_rGyNXd93" \
+            -H "Authorization: Bearer sb_publishable_sF4VfRoiTVl6KFgnTbYztg_rGyNXd93")
+
+          TITLE=$(echo "$ARTICLE" | jq -r '.[0].title // empty')
+
+          if [ -z "$TITLE" ]; then
+            echo "Kein Artikel gefunden – Notification übersprungen."
+            exit 0
+          fi
+
+          echo "Sende Notification: $TITLE"
+
+          # Build JSON payload safely (handles quotes and special chars in title)
+          PAYLOAD=$(jq -n \
+            --arg title "$TITLE" \
+            '{
+              app_id: "cdbb5e39-5291-4e60-b922-a3f6cb02e4f5",
+              included_segments: ["All"],
+              headings: { en: "shared ground", de: "shared ground" },
+              contents: { en: $title, de: $title },
+              web_url: "https://sharedgroundnews.pages.dev/de",
+              url: "https://sharedgroundnews.pages.dev/de"
+            }')
+
+          # Send via OneSignal REST API
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://onesignal.com/api/v1/notifications" \
+            -H "Authorization: Key ${ONESIGNAL_REST_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+
+          echo "Response ($HTTP_CODE): $BODY"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Fehler beim Senden der Notification!"
+            exit 1
+          fi
