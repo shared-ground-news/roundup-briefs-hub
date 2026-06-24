@@ -1223,7 +1223,55 @@ def get_all_articles(category=None, source=None, search=None, topic=None,
     return rows
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+#  BACKFILL  — populate image_url for existing articles that have none
+# ─────────────────────────────────────────────────────────────────────────────
+def backfill_missing_images(batch_size: int = 100, timeout: int = 6):
+    """
+    Fetch og:image for every article where image_url IS NULL and write it back.
+    Safe to re-run: only touches articles that still have no image.
+    Only works with Supabase (needs service role key for updates).
+    """
+    if not USE_SUPABASE:
+        print("⚠️  Backfill skipped — Supabase not configured.", flush=True)
+        return
+
+    print("\n🖼  Backfilling missing images...", flush=True)
+    offset    = 0
+    total_set = 0
+
+    while True:
+        resp = (
+            _supabase.table("articles")
+            .select("id, link")
+            .is_("image_url", "null")
+            .range(offset, offset + batch_size - 1)
+            .execute()
+        )
+        rows = resp.data
+        if not rows:
+            break
+
+        for row in rows:
+            link = row.get("link", "")
+            if not link:
+                continue
+            image_url = fetch_og_image(link, timeout=timeout)
+            if image_url:
+                try:
+                    _supabase.table("articles").update({"image_url": image_url}).eq("id", row["id"]).execute()
+                    total_set += 1
+                    print(f"   ✅  [{row['id']}] {image_url[:80]}", flush=True)
+                except Exception as e:
+                    print(f"   ⚠️  [{row['id']}] update failed: {e}", flush=True)
+
+        offset += batch_size
+
+    print(f"🖼  Backfill done — {total_set} images added.\n", flush=True)
+
+
 if __name__ == "__main__":
     print("🗞️  News Scraper Starting...\n")
     setup_database()
     scrape_all_feeds()
+    backfill_missing_images()
