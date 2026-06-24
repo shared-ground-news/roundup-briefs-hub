@@ -38,8 +38,8 @@ jobs:
             '{
               app_id: "cdbb5e39-5291-4e60-b922-a3f6cb02e4f5",
               included_segments: ["All"],
-              headings: { en: $title, de: $title },
-              contents: { en: $summary, de: $summary },
+              headings: { en: "Neuer Artikel", de: "Neuer Artikel" },
+              contents: { en: $title, de: $title },
               web_url: "https://sharedgroundnews.pages.dev/de"
             }')
 
