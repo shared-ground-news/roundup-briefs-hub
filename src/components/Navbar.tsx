@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, User, Bookmark, Menu, X } from "lucide-react";
+import { Search, User, Bookmark, Menu, X, Mail } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
 
 const navItems = [
   { label: "Home", path: "/de" },
   { label: "Podcasts", path: "/podcasts" },
-  { label: "Newsletter", path: "/newsletter" },
   { label: "About", path: "/about" },
   { label: "Saved", path: "/saved" },
 ];
@@ -17,6 +17,26 @@ const Navbar = () => {
   const { user, requireAuth, signOut } = useAuth();
   const [toast, setToast] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mailOpen, setMailOpen] = useState(false);
+  const [mailEmail, setMailEmail] = useState("");
+  const mailRef = useRef<HTMLDivElement>(null);
+  const { subscribe, isLoading, isSuccess } = useNewsletterSubscription();
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (mailRef.current && !mailRef.current.contains(e.target as Node)) {
+        setMailOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleMailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mailEmail) return;
+    await subscribe({ email: mailEmail });
+  };
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -56,6 +76,45 @@ const Navbar = () => {
             <button onClick={() => navigate("/saved")} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Saved articles">
               <Bookmark size={18} />
             </button>
+            {/* Newsletter popover */}
+            <div className="relative" ref={mailRef}>
+              <button
+                onClick={() => setMailOpen((o) => !o)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Newsletter"
+              >
+                <Mail size={18} />
+              </button>
+              {mailOpen && (
+                <div className="absolute right-0 top-full mt-3 w-72 bg-background border border-border shadow-lg rounded-sm p-4 z-50">
+                  {isSuccess ? (
+                    <p className="text-sm font-medium py-2">Du bist auf der Liste ✓</p>
+                  ) : (
+                    <>
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-1">Newsletter</p>
+                      <p className="text-xs text-muted-foreground mb-3">Wir schreiben dir, wenn es losgeht.</p>
+                      <form onSubmit={handleMailSubmit} className="flex gap-2">
+                        <input
+                          type="email"
+                          required
+                          value={mailEmail}
+                          onChange={(e) => setMailEmail(e.target.value)}
+                          placeholder="deine@email.de"
+                          className="flex-1 border border-border rounded-sm px-3 py-2 text-xs bg-background placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground transition-colors"
+                        />
+                        <button
+                          type="submit"
+                          disabled={isLoading}
+                          className="bg-foreground text-primary-foreground px-3 py-2 text-xs font-semibold rounded-sm hover:opacity-80 transition-opacity disabled:opacity-50"
+                        >
+                          {isLoading ? "…" : "OK"}
+                        </button>
+                      </form>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
             <button onClick={handleUserClick} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" aria-label={user ? "Sign out" : "Sign in"}>
               <User size={18} />
               <span className="body-sm font-medium hidden md:inline">{user ? "Sign Out" : "Sign In"}</span>
