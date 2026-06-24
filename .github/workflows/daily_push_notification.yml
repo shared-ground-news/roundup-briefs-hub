@@ -21,6 +21,8 @@ jobs:
             -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E" \
             -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E")
 
+          echo "Supabase response: $ARTICLE"
+
           TITLE=$(echo "$ARTICLE" | jq -r '.[0].title // empty')
 
           if [ -z "$TITLE" ]; then
