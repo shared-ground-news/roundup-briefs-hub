@@ -38,8 +38,7 @@ jobs:
               included_segments: ["All"],
               headings: { en: "shared ground", de: "shared ground" },
               contents: { en: $title, de: $title },
-              web_url: "https://sharedgroundnews.pages.dev/de",
-              url: "https://sharedgroundnews.pages.dev/de"
+              web_url: "https://sharedgroundnews.pages.dev/de"
             }')
 
           # Send via OneSignal REST API
