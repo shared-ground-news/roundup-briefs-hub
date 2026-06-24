@@ -28,10 +28,10 @@ const TOPIC_DISPLAY: Record<string, string> = {
   "Gewalt & Sicherheit":     "Justiz",
   "Menschenrechte":          "Gesellschaft",
   "Migration & Asyl":        "Gesellschaft",
-  "Recht & Politik":         "Recht & Politik",
-  "Politik & Regierung":     "Recht & Politik",
-  "Lohnluecke & Wirtschaft": "Recht & Politik",
-  "Arbeit & Wirtschaft":     "Recht & Politik",
+  "Politik":         "Politik",
+  "Politik & Regierung":     "Politik",
+  "Lohnluecke & Wirtschaft": "Politik",
+  "Arbeit & Wirtschaft":     "Politik",
   "LGBTQIA+":                "Gesellschaft",
   "Sport":                   "Narrative",
 
@@ -44,20 +44,20 @@ const TOPIC_DISPLAY: Record<string, string> = {
   "Violence":                             "Justiz",
   "Safety & Criminal Justice":            "Justiz",
   "Violence, Safety & Criminal Justice":  "Justiz",
-  "State Power":                          "Recht & Politik",
-  "Recht & Politik":                     "Recht & Politik",
-  "State Power, Law & Governance":        "Recht & Politik",
-  "Anti-Rights & Backlash Movements":     "Recht & Politik",
-  "Economic & Labour Justice":            "Recht & Politik",
-  "Climate & Environmental Justice":      "Recht & Politik",
+  "State Power":                          "Politik",
+  "Politik":                     "Politik",
+  "State Power, Law & Governance":        "Politik",
+  "Anti-Rights & Backlash Movements":     "Politik",
+  "Economic & Labour Justice":            "Politik",
+  "Climate & Environmental Justice":      "Politik",
   "Migration":                            "Gesellschaft",
   "Borders & Citizenship":               "Gesellschaft",
   "Migration, Borders & Citizenship":    "Gesellschaft",
 
   // Raw category field values written by the scraper
-  "women":    "Recht & Politik",
+  "women":    "Politik",
   "lgbtqia+": "Gesellschaft",
-  "general":  "Recht & Politik",
+  "general":  "Politik",
 };
 
 export function mapTopic(backendTopic: string): string {
@@ -83,7 +83,7 @@ export function getArticleCategory(article: Article): string {
     if (mapped) return mapped;
   }
 
-  return "Recht & Politik";
+  return "Politik";
 }
 
 export function getCategoryColor(

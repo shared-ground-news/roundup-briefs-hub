@@ -31,7 +31,7 @@ interface IndexProps {
   locale: Locale;
 }
 
-const ALL_TOPICS = ["Alle Artikel", "Körper", "Narrative", "Recht & Politik", "Justiz", "Gesellschaft"];
+const ALL_TOPICS = ["Alle Artikel", "Körper", "Narrative", "Politik", "Justiz", "Gesellschaft"];
 
 // ─── Static podcast list (Supabase podcasts API can replace this later) ──────
 const PODCASTS = [
