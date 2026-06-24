@@ -1226,17 +1226,19 @@ def get_all_articles(category=None, source=None, search=None, topic=None,
 # ─────────────────────────────────────────────────────────────────────────────
 #  BACKFILL  — populate image_url for existing articles that have none
 # ─────────────────────────────────────────────────────────────────────────────
-def backfill_missing_images(batch_size: int = 100, timeout: int = 6):
+def backfill_missing_images(batch_size: int = 200, timeout: int = 3, workers: int = 10):
     """
     Fetch og:image for every article where image_url IS NULL and write it back.
-    Safe to re-run: only touches articles that still have no image.
+    Uses a thread pool for parallel fetching. Safe to re-run.
     Only works with Supabase (needs service role key for updates).
     """
     if not USE_SUPABASE:
         print("⚠️  Backfill skipped — Supabase not configured.", flush=True)
         return
 
-    print("\n🖼  Backfilling missing images...", flush=True)
+    import concurrent.futures
+
+    print("\n🖼  Backfilling missing images (parallel)...", flush=True)
     offset    = 0
     total_set = 0
 
@@ -1248,22 +1250,25 @@ def backfill_missing_images(batch_size: int = 100, timeout: int = 6):
             .range(offset, offset + batch_size - 1)
             .execute()
         )
-        rows = resp.data
+        rows = [r for r in resp.data if r.get("link")]
         if not rows:
             break
 
-        for row in rows:
-            link = row.get("link", "")
-            if not link:
-                continue
-            image_url = fetch_og_image(link, timeout=timeout)
-            if image_url:
-                try:
-                    _supabase.table("articles").update({"image_url": image_url}).eq("id", row["id"]).execute()
-                    total_set += 1
-                    print(f"   ✅  [{row['id']}] {image_url[:80]}", flush=True)
-                except Exception as e:
-                    print(f"   ⚠️  [{row['id']}] update failed: {e}", flush=True)
+        print(f"  Batch offset={offset}: {len(rows)} articles", flush=True)
+
+        def fetch_one(row):
+            img = fetch_og_image(row["link"], timeout=timeout)
+            return row["id"], img
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+            for article_id, image_url in pool.map(fetch_one, rows):
+                if image_url:
+                    try:
+                        _supabase.table("articles").update({"image_url": image_url}).eq("id", article_id).execute()
+                        total_set += 1
+                        print(f"   ✅  [{article_id}] {image_url[:80]}", flush=True)
+                    except Exception as e:
+                        print(f"   ⚠️  [{article_id}] update failed: {e}", flush=True)
 
         offset += batch_size
 
