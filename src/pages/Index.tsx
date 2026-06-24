@@ -9,13 +9,24 @@ import PodcastCard from "@/components/PodcastCard";
 import TopicFilterBar from "@/components/TopicFilterBar";
 import { useArticles } from "@/hooks/useArticles";
 import { useAuth } from "@/hooks/useAuth";
+import { useOgImage } from "@/hooks/useOgImage";
 import {
   getArticleCategory,
   getCategoryColor,
   formatDate,
   isPaywalled,
 } from "@/lib/api";
-import { type Locale } from "@/lib/constants";
+import { type Article, type Locale } from "@/lib/constants";
+
+// Mini-components so hooks (useOgImage) can be called per-article ─────────────
+const CatHeroImage = ({ article, className }: { article: Article; className: string }) => {
+  const og = useOgImage(article.link, !!article.image_url);
+  return <TimedImage src={article.image_url || og} alt={article.title} className={className} />;
+};
+const CatSideImage = ({ article, className }: { article: Article; className: string }) => {
+  const og = useOgImage(article.link, !!article.image_url);
+  return <TimedImage src={article.image_url || og} alt={article.title} className={className} />;
+};
 
 interface IndexProps {
   locale: Locale;
@@ -286,9 +297,8 @@ const Index = ({ locale }: IndexProps) => {
                         {isPaywalled(featured) && (
                           <div className="absolute top-3 right-3 z-10 bg-foreground/75 text-background text-[10px] font-semibold px-1.5 py-0.5 rounded-sm backdrop-blur-sm select-none">€</div>
                         )}
-                        <TimedImage
-                          src={featured.image_url}
-                          alt={featured.title}
+                        <CatHeroImage
+                          article={featured}
                           className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
                         />
                       </div>
@@ -319,9 +329,8 @@ const Index = ({ locale }: IndexProps) => {
                             {isPaywalled(article) && (
                               <div className="absolute top-2 right-2 z-10 bg-foreground/75 text-background text-[9px] font-semibold px-1.5 py-0.5 rounded-sm backdrop-blur-sm select-none leading-none">€</div>
                             )}
-                            <TimedImage
-                              src={article.image_url}
-                              alt={article.title}
+                            <CatSideImage
+                              article={article}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           </div>
