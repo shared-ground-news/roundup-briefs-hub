@@ -1,3 +1,4 @@
+import { useOgImage } from "@/hooks/useOgImage";
 import TimedImage from "@/components/TimedImage";
 
 interface ArticleTileProps {
@@ -21,6 +22,9 @@ const ArticleTile = ({
   href,
   paywalled,
 }: ArticleTileProps) => {
+  const ogImage = useOgImage(href, !!image);
+  const src = image || ogImage;
+
   const colorClass =
     categoryColor === "orange"
       ? "category-tag--orange"
@@ -37,7 +41,7 @@ const ArticleTile = ({
           </div>
         )}
         <TimedImage
-          src={image}
+          src={src}
           alt={headline}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />

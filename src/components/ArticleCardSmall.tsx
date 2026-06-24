@@ -1,4 +1,5 @@
 import { Bookmark, Play } from "lucide-react";
+import { useOgImage } from "@/hooks/useOgImage";
 import TimedImage from "@/components/TimedImage";
 
 interface ArticleCardSmallProps {
@@ -32,6 +33,9 @@ const ArticleCardSmall = ({
   variant = "default",
   paywalled = false,
 }: ArticleCardSmallProps) => {
+  const ogImage = useOgImage(href, !!thumbnail);
+  const src = thumbnail || ogImage;
+
   const colorClass =
     categoryColor === "orange"
       ? "category-tag--orange"
@@ -43,7 +47,7 @@ const ArticleCardSmall = ({
     variant === "sidebar" ? (
       <article className="group flex gap-3 py-4 border-b border-[hsl(0,0%,90%)] last:border-b-0 cursor-pointer">
         <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden bg-muted">
-          <TimedImage src={thumbnail} alt={headline} className="w-full h-full object-cover" />
+          <TimedImage src={src} alt={headline} className="w-full h-full object-cover" />
           {isVideo && (
             <div className="absolute inset-0 flex items-center justify-center bg-foreground/30">
               <Play size={20} className="text-primary-foreground fill-current" />
@@ -69,7 +73,7 @@ const ArticleCardSmall = ({
       <article className="group flex gap-4 py-4 border-b border-border last:border-b-0 cursor-pointer">
         <div className="relative w-28 h-20 flex-shrink-0 overflow-hidden rounded-sm bg-muted">
           <TimedImage
-            src={thumbnail}
+            src={src}
             alt={headline}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
