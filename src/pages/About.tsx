@@ -132,7 +132,7 @@ const About = () => {
                   { number: "40+", label: "Medien im DACH-Raum" },
                   { number: "3", label: "Länder: DE, AT, CH" },
                   { number: "12h", label: "Aktualisierungsintervall" },
-                  { number: "4", label: "Kuratierte Podcasts" },
+                  { number: "6", label: "Kuratierte Podcasts" },
                 ].map(({ number, label }) => (
                   <div key={label} className="flex items-baseline gap-3">
                     <span className="text-3xl font-headline font-black text-accent-blue">{number}</span>
@@ -146,7 +146,7 @@ const About = () => {
               <h4 className="headline-sm mb-2">Kontakt</h4>
               <p className="body-sm text-muted-foreground">
                 Quellen-Vorschläge oder Feedback? Schreib uns an{" "}
-                <span className="text-accent-blue font-medium">hello@sharedground.news</span>
+                <span className="text-accent-blue font-medium">sharedgroundnews@gmail.com</span>
               </p>
             </div>
           </div>

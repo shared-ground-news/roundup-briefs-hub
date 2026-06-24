@@ -18,10 +18,10 @@ const Contact = () => (
           <div className="flex items-center gap-3">
             <Mail size={15} className="text-muted-foreground flex-shrink-0" />
             <a
-              href="mailto:sharedground@gmail.com"
+              href="mailto:sharedgroundnews@gmail.com"
               className="text-sm text-foreground/80 hover:text-foreground transition-colors"
             >
-              sharedground@gmail.com
+              sharedgroundnews@gmail.com
             </a>
           </div>
 
