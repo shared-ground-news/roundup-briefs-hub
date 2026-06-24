@@ -18,8 +18,8 @@ jobs:
           # Fetch latest German article from Supabase
           ARTICLE=$(curl -s \
             "https://mhnjjstdayhkdwfxfxlv.supabase.co/rest/v1/articles?locale=eq.de&order=published_at.desc.nullslast&limit=1&select=title,url" \
-            -H "apikey: sb_publishable_sF4VfRoiTVl6KFgnTbYztg_rGyNXd93" \
-            -H "Authorization: Bearer sb_publishable_sF4VfRoiTVl6KFgnTbYztg_rGyNXd93")
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1obmpqc3RkYXloa2R3ZnhmeGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNTQ5ODksImV4cCI6MjA5MzgzMDk4OX0.lxnKb8ugytu6phdbA3PrbtdIj65wn6aGl3lFJQr170E")
 
           TITLE=$(echo "$ARTICLE" | jq -r '.[0].title // empty')
 
