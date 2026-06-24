@@ -9,8 +9,8 @@ const navItems = [
   { label: "About", path: "/about" },
 ];
 
-// Collapse at 100px, expand at 40px — hysteresis gap (60px) > desktop height
-// change (45px), so no oscillation is possible.
+// Hysteresis: collapse when scrolled past 100px, expand when back under 40px.
+// Gap (60px) > desktop height delta (~61px logo row) — no oscillation possible.
 const COLLAPSE_AT = 100;
 const EXPAND_AT = 40;
 
@@ -21,9 +21,10 @@ const Navbar = () => {
   const [mailEmail, setMailEmail] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const mailRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const { subscribe, isLoading, isSuccess } = useNewsletterSubscription();
 
-  // Hysteresis scroll listener — instant state change, no CSS height transition
+  // ── Scroll detection ────────────────────────────────────────────────────────
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -37,23 +38,23 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Keep --header-height CSS variable in sync so TopicFilterBar sticks correctly.
-  // Mobile: always 37px (date bar ≈ compact row, same height).
-  // Desktop: 82px expanded (date 37 + nav 45), 37px compact.
+  // ── Keep --header-height in sync via ResizeObserver ─────────────────────────
+  // TopicFilterBar reads this to know exactly where to stick.
   useEffect(() => {
-    const update = () => {
-      const isMd = window.innerWidth >= 768;
+    const el = headerRef.current;
+    if (!el) return;
+    const update = () =>
       document.documentElement.style.setProperty(
         "--header-height",
-        isMd && !scrolled ? "82px" : "37px"
+        `${el.offsetHeight}px`
       );
-    };
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [scrolled]);
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
-  // Close mail popover on outside click
+  // ── Close mail popover on outside click ─────────────────────────────────────
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (mailRef.current && !mailRef.current.contains(e.target as Node)) {
@@ -70,67 +71,92 @@ const Navbar = () => {
     await subscribe({ email: mailEmail });
   };
 
-  const NewsletterPopover = () => (
-    <div className="relative flex items-center" ref={mailRef}>
-      <button
-        onClick={() => setMailOpen((o) => !o)}
-        className="text-muted-foreground hover:text-foreground transition-colors"
-        aria-label="Newsletter"
-      >
-        <Mail size={18} />
-      </button>
-      {mailOpen && (
-        <div className="absolute right-0 top-full mt-3 w-72 bg-background border border-border shadow-lg rounded-sm p-4 z-50">
-          {isSuccess ? (
-            <p className="text-sm font-medium py-2">Du bist auf der Liste ✓</p>
-          ) : (
-            <>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-1">Newsletter</p>
-              <p className="text-xs text-muted-foreground mb-3">
-                Wir schreiben dir, wenn es losgeht.
-              </p>
-              <form onSubmit={handleMailSubmit} className="flex gap-2">
-                <input
-                  type="email"
-                  required
-                  value={mailEmail}
-                  onChange={(e) => setMailEmail(e.target.value)}
-                  placeholder="deine@email.de"
-                  className="flex-1 border border-border rounded-sm px-3 py-2 text-xs bg-background placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground transition-colors"
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="bg-foreground text-primary-foreground px-3 py-2 text-xs font-semibold rounded-sm hover:opacity-80 transition-opacity disabled:opacity-50"
-                >
-                  {isLoading ? "…" : "OK"}
-                </button>
-              </form>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background">
+      <header ref={headerRef} className="sticky top-0 z-50 bg-background">
 
-        {scrolled ? (
-          /* ── COMPACT STATE ──────────────────────────────────────────────────
-             Mobile:  [          Shared Ground (center)          ] [☰]
-             Desktop: [Shared Ground (left)] [NEWS FEED · …] [✉]
-          ─────────────────────────────────────────────────────────────────── */
-          <div className="border-b border-border">
-            {/* Mobile compact */}
-            <div className="md:hidden px-4 py-2 flex items-center justify-between">
-              <div className="w-7" />
-              <Link to="/de">
-                <span className="font-headline text-base font-black tracking-tight text-foreground">
-                  Shared Ground
-                </span>
-              </Link>
+        {/* ── ROW 1 — always visible ──────────────────────────────────────────
+            Not scrolled: [date]                          [✉] [☰]
+            Scrolled:     [date]  Shared Ground (center)  [✉] [☰]
+        ──────────────────────────────────────────────────────────────────── */}
+        <div className="border-b border-border">
+          <div className="container max-w-[1400px] mx-auto px-4 py-2 relative flex items-center justify-between">
+
+            {/* Date — left */}
+            <span className="body-sm text-muted-foreground hidden sm:block">
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+            <span className="body-sm text-muted-foreground sm:hidden">
+              {new Date().toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+
+            {/* Compact logo — absolute center, only when scrolled */}
+            {scrolled && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <Link to="/de" className="pointer-events-auto">
+                  <span className="font-headline text-base font-black tracking-tight text-foreground">
+                    Shared Ground
+                  </span>
+                </Link>
+              </div>
+            )}
+
+            {/* Icons — right */}
+            <div className="flex items-center gap-3">
+              {/* Newsletter popover */}
+              <div className="relative flex items-center" ref={mailRef}>
+                <button
+                  onClick={() => setMailOpen((o) => !o)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Newsletter"
+                >
+                  <Mail size={18} />
+                </button>
+                {mailOpen && (
+                  <div className="absolute right-0 top-full mt-3 w-72 bg-background border border-border shadow-lg rounded-sm p-4 z-50">
+                    {isSuccess ? (
+                      <p className="text-sm font-medium py-2">Du bist auf der Liste ✓</p>
+                    ) : (
+                      <>
+                        <p className="text-xs font-semibold uppercase tracking-wider mb-1">
+                          Newsletter
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          Wir schreiben dir, wenn es losgeht.
+                        </p>
+                        <form onSubmit={handleMailSubmit} className="flex gap-2">
+                          <input
+                            type="email"
+                            required
+                            value={mailEmail}
+                            onChange={(e) => setMailEmail(e.target.value)}
+                            placeholder="deine@email.de"
+                            className="flex-1 border border-border rounded-sm px-3 py-2 text-xs bg-background placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground transition-colors"
+                          />
+                          <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="bg-foreground text-primary-foreground px-3 py-2 text-xs font-semibold rounded-sm hover:opacity-80 transition-opacity disabled:opacity-50"
+                          >
+                            {isLoading ? "…" : "OK"}
+                          </button>
+                        </form>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Hamburger — always (desktop + mobile) */}
               <button
                 onClick={() => setMenuOpen((o) => !o)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -139,119 +165,50 @@ const Navbar = () => {
                 {menuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
+          </div>
+        </div>
 
-            {/* Desktop compact */}
-            <div className="hidden md:flex container max-w-[1400px] mx-auto px-6 py-2 items-center justify-between gap-6">
-              <Link to="/de" className="shrink-0">
-                <span className="font-headline text-base font-black tracking-tight text-foreground">
-                  Shared Ground
-                </span>
-              </Link>
-              <nav className="flex items-center gap-6">
-                {navItems.map((item) => (
+        {/* ── ROW 2 — big logo, only when NOT scrolled ────────────────────────
+            Scrolls off the page once compact mode kicks in.
+        ──────────────────────────────────────────────────────────────────── */}
+        {!scrolled && (
+          <div className="border-b border-border text-center py-3">
+            <Link to="/de">
+              <h1 className="font-headline text-3xl font-black tracking-tight text-foreground">
+                Shared Ground
+              </h1>
+            </Link>
+          </div>
+        )}
+      </header>
+
+      {/* ── Nav overlay — fixed just below sticky header ─────────────────────── */}
+      {menuOpen && (
+        <>
+          <nav
+            className="fixed left-0 right-0 bg-background border-b border-border shadow-lg z-40"
+            style={{ top: "var(--header-height, 37px)" }}
+          >
+            <ul className="container max-w-[1400px] mx-auto px-6 divide-y divide-border">
+              {navItems.map((item) => (
+                <li key={item.path}>
                   <Link
-                    key={item.path}
                     to={item.path}
-                    className={`nav-link ${
+                    onClick={() => setMenuOpen(false)}
+                    className={`block py-4 text-sm font-medium uppercase tracking-widest transition-colors ${
                       location.pathname === item.path
-                        ? "!text-foreground border-b-2 border-foreground pb-0.5"
-                        : ""
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {item.label}
                   </Link>
-                ))}
-              </nav>
-              <NewsletterPopover />
-            </div>
-          </div>
-        ) : (
-          /* ── EXPANDED STATE ─────────────────────────────────────────────────
-             Row 1 (all): date text on left, icons on right
-             Row 2 (desktop only): nav links centered
-             Big logo lives in Index.tsx as page content (scrolls away naturally)
-          ─────────────────────────────────────────────────────────────────── */
-          <>
-            {/* Date row */}
-            <div className="border-b border-border">
-              <div className="container max-w-[1400px] mx-auto px-4 md:px-6 py-2 flex justify-between items-center">
-                <span className="body-sm text-muted-foreground hidden sm:block">
-                  {new Date().toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-                <span className="body-sm text-muted-foreground sm:hidden">
-                  {new Date().toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-                <div className="flex items-center gap-3 md:gap-4">
-                  <NewsletterPopover />
-                  <button
-                    onClick={() => setMenuOpen((o) => !o)}
-                    className="md:hidden text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Toggle menu"
-                  >
-                    {menuOpen ? <X size={20} /> : <Menu size={20} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop nav */}
-            <div className="hidden md:block border-b border-border">
-              <nav className="container max-w-[1400px] mx-auto px-6">
-                <ul className="flex items-center justify-center gap-8 py-3">
-                  {navItems.map((item) => (
-                    <li key={item.path}>
-                      <Link
-                        to={item.path}
-                        className={`nav-link ${
-                          location.pathname === item.path
-                            ? "!text-foreground border-b-2 border-foreground pb-2"
-                            : ""
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          </>
-        )}
-      </header>
-
-      {/* Mobile nav overlay — appears below whichever header row is showing */}
-      {menuOpen && (
-        <nav className="fixed top-[37px] left-0 right-0 bg-background border-b border-border shadow-lg z-40 md:hidden">
-          <ul className="flex flex-col divide-y divide-border">
-            {navItems.map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  onClick={() => setMenuOpen(false)}
-                  className={`block px-6 py-4 text-sm font-medium uppercase tracking-widest transition-colors ${
-                    location.pathname === item.path
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-      {menuOpen && (
-        <div className="fixed inset-0 z-30 md:hidden" onClick={() => setMenuOpen(false)} />
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
+        </>
       )}
     </>
   );
