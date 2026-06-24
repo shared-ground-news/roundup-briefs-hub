@@ -1,4 +1,3 @@
-import { Share2 } from "lucide-react";
 import { useOgImage } from "@/hooks/useOgImage";
 import TimedImage from "@/components/TimedImage";
 
@@ -56,23 +55,6 @@ const FeaturedArticle = ({
           <span className="body-sm text-muted-foreground">{date}</span>
           <span className="text-muted-foreground">·</span>
           <span className="body-sm text-muted-foreground">{readTime}</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Share"
-            onClick={async (e) => {
-              e.stopPropagation();
-              const url = articleUrl || window.location.href;
-              if (navigator.share) {
-                await navigator.share({ title: headline, url });
-              } else {
-                await navigator.clipboard.writeText(url);
-              }
-            }}
-          >
-            <Share2 size={16} />
-          </button>
         </div>
       </div>
     </article>
