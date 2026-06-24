@@ -29,9 +29,17 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Collapse logo on scroll
+  // Collapse logo on scroll — hysteresis prevents oscillation:
+  // collapse when scrolling down past 100px, expand only when back above 30px
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled((prev) => {
+        if (!prev && y > 100) return true;
+        if (prev && y < 30) return false;
+        return prev;
+      });
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
