@@ -94,16 +94,16 @@ const Newsletter = () => {
                   <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center mx-auto mb-5">
                     <Mail size={20} className="text-primary-foreground" />
                   </div>
-                  <h4 className="headline-lg mb-2">Du bist dabei 🎉</h4>
+                  <h4 className="headline-lg mb-2">Du bist auf der Liste 🎉</h4>
                   <p className="text-sm text-muted-foreground">
-                    Schön, dass du dabei bist! Den ersten Newsletter bekommst du am nächsten Sonntag.
+                    Danke! Wir melden uns, sobald der Newsletter startet.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h4 className="headline-lg mb-2">Jetzt anmelden</h4>
+                  <h4 className="headline-lg mb-2">Auf die Warteliste</h4>
                   <p className="text-sm text-muted-foreground mb-8">
-                    Trag deine E-Mail ein — du kannst dich jederzeit wieder abmelden.
+                    Trag deine E-Mail ein — wir schreiben dir, wenn der Newsletter startet.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -136,8 +136,8 @@ const Newsletter = () => {
                   </form>
 
                   <p className="text-[11px] text-muted-foreground/50 mt-5 leading-relaxed">
-                    Kein Spam. Nur der Shared Ground Newsletter, jeden Sonntag.
-                    Abmeldung jederzeit mit einem Klick möglich.
+                    Kein Spam. Nur eine E-Mail wenn es losgeht.
+                    Abmeldung jederzeit möglich.
                   </p>
                 </>
               )}
